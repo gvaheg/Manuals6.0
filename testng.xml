@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+    <classes>
+      <class name="Resources.Infographics"/>
+      <class name="Resources.Podcasts"/>
+      <class name="Other.LetterSpine"/>
+      <class name="Resources.Tables"/>
+      <class name="Resources.LetterSpine"/>
+      <class name="Other.Symptoms_PV"/>
+      <class name="Other.Emergencies"/>
+      <class name="Other.Drugs"/>
+      <class name="Resources.Figures"/>
+      <class name="Resources.Videos"/>
+      <class name="Resources.Quizzes"/>
+      <class name="Resources.ClinicalCalculators"/>
+      <class name="Resources.Images2"/>
+      <class name="Resources.LabTests"/>
+      <class name="Resources.Sounds"/>
+      <class name="Other.Symptoms_CV"/>
+      <class name="Resources.Images3"/>
+      <class name="Resources.Images"/>
+      <class name="Resources.Models3D"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

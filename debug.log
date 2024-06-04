@@ -1,0 +1,16 @@
+[0318/010412.953:ERROR:file_io_win.cc(170)] CreateFile C:\Users\gvahe\AppData\Local\Temp\scoped_dir9464_10503\Crashpad\reports\0bab85b5-c6e2-4ea0-bed9-9fca4f6c9460.dmp: The system cannot find the path specified. (0x3)
+[0318/010412.954:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0409/113155.780:ERROR:file_io_win.cc(170)] CreateFile C:\Users\gvahe\AppData\Local\Temp\scoped_dir14916_8644\Crashpad\reports\87f2429e-d7aa-4f7d-a76a-9265201c10f5.dmp: The system cannot find the path specified. (0x3)
+[0409/113155.782:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0424/132644.014:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
+[0629/164156.742:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0629/164156.758:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0629/164156.758:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[0629/164156.758:ERROR:exception_snapshot_win.cc(98)] thread ID 15284 not found in process
+[1104/145026.820:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1201/113306.726:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0111/125425.439:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0111/134854.851:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0112/134854.863:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0113/090628.046:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0113/134854.873:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
