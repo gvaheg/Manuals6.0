@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class Figures extends All_Functions {
-//Vahe
+
 	// Before Class
 	@BeforeClass
 	public void startBrowser() throws Exception {
@@ -19,12 +19,12 @@ public class Figures extends All_Functions {
 		System.out.println("Browser Started!");
 		getDate();
 	}
-/*
+
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://www.merckmanuals.com/professional/pages-with-widgets/figures?mode=list");
+			wd.get("https://www.msdmanuals.com/professional/pages-with-widgets/figures?mode=list");
 			System.out.println("VERSION: PROD EN-US PV");
 			verifyFigures();
 			wd.close();
@@ -215,7 +215,7 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-*/
+
 	@Test(priority = 16, description = "RU CV")
 	public void RU_CV() {
 		try {
