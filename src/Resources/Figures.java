@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class Figures extends All_Functions {
-
+//Vahe
 	// Before Class
 	@BeforeClass
 	public void startBrowser() throws Exception {
