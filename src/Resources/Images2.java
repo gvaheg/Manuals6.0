@@ -122,7 +122,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	
 	
 	@Test(priority = 9, description = "ES PV")
@@ -151,7 +151,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 11, description = "DE PV")
 	public void DE_PV() {
 		try {
@@ -177,7 +177,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	/*
 	@Test(priority = 13, description = "IT PV")
 	public void IT_PV() {
 		try {
@@ -226,11 +226,8 @@ public class Images2 extends All_Functions {
 			Thread.sleep(2000);
 			CloseCookies();
 			Thread.sleep(2000);
-			try {
-				wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
-			}catch(Exception e) {
-				System.out.println("Can't Close Prompt");
-				}
+			try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
+			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			
 			System.out.println("VERSION: PROD RU CV");
 			verifyImages2();
@@ -239,6 +236,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
+	*/
 	/*
 	@Test(priority = 17, description = "CN PV")
 	public void ZH_PV() {

@@ -16,7 +16,7 @@ public class Videos extends All_Functions {
 		wb = new XSSFWorkbook();
 		System.out.println("Browser Started!");
 	}
-
+/*
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
@@ -42,7 +42,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+*/
 	@Test(priority = 3, description = "PT PV")
 	public void PT_PV() {
 		try {
@@ -68,7 +68,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+/*
 	@Test(priority = 5, description = "JA PV")
 	public void JA_PV() {
 		try {
@@ -94,7 +94,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+*/
 	@Test(priority = 7, description = "FR PV")
 	public void FR_PV() {
 		try {
@@ -120,7 +120,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+/*
 	@Test(priority = 9, description = "ES PV")
 	public void ES_PV() {
 		try {
@@ -211,7 +211,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 
 	@Test(priority = 16, description = "RU CV")
 	public void RU_CV() {
@@ -219,20 +219,11 @@ public class Videos extends All_Functions {
 			wd = new FirefoxDriver();
 			wd.get("https://www.msdmanuals.com/ru/home/pages-with-widgets/%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE?mode=list");
 			Thread.sleep(2000);
-			// Close Cookies
-			try {
-				WebElement AcceptCookies = wd.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]"));
-				AcceptCookies.click();
-			} catch (Exception e) {
-				System.out.println("Can't Close Cookies");
-			}
+			CloseCookies();
 			// End Close Cookies
 			Thread.sleep(2000);
-			try {
-				wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
-			}catch(Exception e) {
-				System.out.println("Can't Close Prompt");
-				}
+			try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
+			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			System.out.println("VERSION: PROD RU CV");
 			verifyVideos();
 			wd.close();
@@ -240,7 +231,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+/*
 	@Test(priority = 17, description = "CN PV")
 	public void CN_PV() {
 		try {
@@ -397,7 +388,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		getDate();
