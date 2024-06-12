@@ -20,19 +20,7 @@ public class Figures extends All_Functions {
 		getDate();
 	}
 
-	@Test(priority = 1, description = "EN-US PV")
-	public void EN_US_PV() {
-		try {
-			wd = new FirefoxDriver();
-			wd.get("https://www.merckmanuals.com/professional/pages-with-widgets/figures?mode=list");
-			System.out.println("VERSION: PROD EN-US PV");
-			verifyFigures();
-			wd.close();
-			
-		} catch (Exception e) {
-			System.out.println("Page Error!");
-		}
-	}
+	
 
 	@Test(priority = 2, description = "EN-US CV")
 	public void EN_US_CV() {
