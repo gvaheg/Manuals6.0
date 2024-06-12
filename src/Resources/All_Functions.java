@@ -34,7 +34,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class All_Functions {
-
+//VAHE
 	private static final boolean Figures = false;
 	// START DRIVER
 	static WebDriver wd;
