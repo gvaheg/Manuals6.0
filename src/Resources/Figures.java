@@ -24,7 +24,7 @@ public class Figures extends All_Functions {
 	public void EN_US_PV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://www.msdmanuals.com/professional/pages-with-widgets/figures?mode=list");
+			wd.get("https://www.merckmanuals.com/professional/pages-with-widgets/figures?mode=list");
 			System.out.println("VERSION: PROD EN-US PV");
 			verifyFigures();
 			wd.close();
