@@ -11,7 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class Figures extends All_Functions {
-
+//Vahe Changed
 	// Before Class
 	@BeforeClass
 	public void startBrowser() throws Exception {
@@ -222,16 +222,9 @@ public class Figures extends All_Functions {
 			wd = new FirefoxDriver();
 			wd.get("https://www.msdmanuals.com/ru/home/pages-with-widgets/%D1%80%D0%B8%D1%81%D1%83%D0%BD%D0%BA%D0%B8?mode=list");
 			Thread.sleep(2000);
-			// Close Cookies
-			try {
-				WebElement AcceptCookies = wd.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]"));
-				AcceptCookies.click();
-			} catch (Exception e) {
-				System.out.println("Can't Close Cookies");
-			}
-			// End Close Cookies
+			CloseCookies();
 			Thread.sleep(2000);
-			try {wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
+			try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
 			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			System.out.println("VERSION: PROD RU CV");
 			verifyFigures();

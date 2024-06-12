@@ -55,11 +55,11 @@ function toggleAllBoxes() {
 <body>
 <h2 align='center'>Default test</h2><table border='1' align="center">
 <tr>
-<td>Tests passed/Failed/Skipped:</td><td>27/0/0</td>
+<td>Tests passed/Failed/Skipped:</td><td>2/0/0</td>
 </tr><tr>
-<td>Started on:</td><td>Mon Jun 03 14:21:59 EDT 2024</td>
+<td>Started on:</td><td>Tue Jun 11 11:45:14 EDT 2024</td>
 </tr>
-<tr><td>Total time:</td><td>93435 seconds (93435498 ms)</td>
+<tr><td>Total time:</td><td>11458 seconds (11458151 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -67,6 +67,118 @@ function toggleAllBoxes() {
 </tr>
 </table><p/>
 <small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-failed'>
+<tr><td colspan='4' align='center'><b>FAILED CONFIGURATIONS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='Resources.Tables.CloseBrowser()'><b>CloseBrowser</b><br>Test class: Resources.Tables</td>
+<td><div><pre>org.openqa.selenium.NoSuchSessionException: Tried to run command without establishing a connection
+Build info: version: &apos;4.12.1&apos;, revision: &apos;8e34639b11&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.3&apos;
+Driver info: org.openqa.selenium.firefox.FirefoxDriver
+Command: [fe7432d4-d134-412a-b3a7-f8fc512bcfdd, close {}]
+Capabilities {acceptInsecureCerts: true, browserName: firefox, browserVersion: 122.0, moz:accessibilityChecks: false, moz:buildID: 20240118164516, moz:debuggerAddress: 127.0.0.1:18513, moz:geckodriverVersion: 0.34.0, moz:headless: false, moz:platformVersion: 10.0, moz:processID: 31816, moz:profile: C:\Users\gvahe\AppData\Loca..., moz:shutdownTimeout: 60000, moz:webdriverClick: true, moz:windowless: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://127.0.0.1:18513/devtoo..., se:cdpVersion: 85.0, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: fe7432d4-d134-412a-b3a7-f8fc512bcfdd
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:52)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:191)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:196)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:171)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:602)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:675)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:679)
+	at org.openqa.selenium.remote.RemoteWebDriver.close(RemoteWebDriver.java:409)
+	at Resources.Tables.CloseBrowser(Tables.java:397)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:62)
+	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:385)
+	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:321)
+	at org.testng.internal.TestMethodWorker.invokeAfterClassMethods(TestMethodWorker.java:217)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:130)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:794)
+	at org.testng.TestRunner.run(TestRunner.java:596)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:276)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
+	at org.testng.TestNG.runSuites(TestNG.java:1063)
+	at org.testng.TestNG.run(TestNG.java:1031)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
+</pre></div><a href='#' onClick='toggleBox("stack-trace409524217", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace409524217'><pre>org.openqa.selenium.NoSuchSessionException: Tried to run command without establishing a connection
+Build info: version: &apos;4.12.1&apos;, revision: &apos;8e34639b11&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.3&apos;
+Driver info: org.openqa.selenium.firefox.FirefoxDriver
+Command: [fe7432d4-d134-412a-b3a7-f8fc512bcfdd, close {}]
+Capabilities {acceptInsecureCerts: true, browserName: firefox, browserVersion: 122.0, moz:accessibilityChecks: false, moz:buildID: 20240118164516, moz:debuggerAddress: 127.0.0.1:18513, moz:geckodriverVersion: 0.34.0, moz:headless: false, moz:platformVersion: 10.0, moz:processID: 31816, moz:profile: C:\Users\gvahe\AppData\Loca..., moz:shutdownTimeout: 60000, moz:webdriverClick: true, moz:windowless: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://127.0.0.1:18513/devtoo..., se:cdpVersion: 85.0, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: fe7432d4-d134-412a-b3a7-f8fc512bcfdd
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:52)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:191)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:196)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:171)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:602)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:675)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:679)
+	at org.openqa.selenium.remote.RemoteWebDriver.close(RemoteWebDriver.java:409)
+	at Resources.Tables.CloseBrowser(Tables.java:397)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+	at org.testng.internal.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:62)
+	at org.testng.internal.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:385)
+	at org.testng.internal.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:321)
+	at org.testng.internal.TestMethodWorker.invokeAfterClassMethods(TestMethodWorker.java:217)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:130)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:794)
+	at org.testng.TestRunner.run(TestRunner.java:596)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:276)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
+	at org.testng.TestNG.runSuites(TestNG.java:1063)
+	at org.testng.TestNG.run(TestNG.java:1031)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
+</pre></div></td>
+<td>0</td>
+<td>Resources.Tables@26d9b808</td></tr>
+</table><p>
 <table width='100%' border='1' class='invocation-passed'>
 <tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
 <tr><td><b>Test method</b></td>
@@ -75,140 +187,15 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='Resources.Figures.JA_PV()'><b>JA_PV</b><br>Test class: Resources.Figures<br>Test method: JA PV</td>
+<td title='Resources.Tables.EN_MSD_CV()'><b>EN_MSD_CV</b><br>Test class: Resources.Tables<br>Test method: EN MSD CV</td>
 <td></td>
-<td>3465</td>
-<td>Resources.Figures@a38c7fe</td></tr>
+<td>3786</td>
+<td>Resources.Tables@26d9b808</td></tr>
 <tr>
-<td title='Resources.Figures.ES_PV()'><b>ES_PV</b><br>Test class: Resources.Figures<br>Test method: ES PV</td>
+<td title='Resources.Tables.EN_MSD_PV()'><b>EN_MSD_PV</b><br>Test class: Resources.Tables<br>Test method: EN MSD PV</td>
 <td></td>
-<td>3611</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.ES_CV()'><b>ES_CV</b><br>Test class: Resources.Figures<br>Test method: ES CV</td>
-<td></td>
-<td>4220</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.VI_MSD_PV()'><b>VI_MSD_PV</b><br>Test class: Resources.Figures<br>Test method: VI MSD PV</td>
-<td></td>
-<td>3720</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.UK_PV()'><b>UK_PV</b><br>Test class: Resources.Figures<br>Test method: UK PV</td>
-<td></td>
-<td>3248</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.EN_MSD_CV()'><b>EN_MSD_CV</b><br>Test class: Resources.Figures<br>Test method: EN MSD CV</td>
-<td></td>
-<td>4364</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.JA_CV()'><b>JA_CV</b><br>Test class: Resources.Figures<br>Test method: JA CV</td>
-<td></td>
-<td>4495</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.EN_US_PV()'><b>EN_US_PV</b><br>Test class: Resources.Figures<br>Test method: EN-US PV</td>
-<td></td>
-<td>3839</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.IT_CV()'><b>IT_CV</b><br>Test class: Resources.Figures<br>Test method: IT CV</td>
-<td></td>
-<td>4219</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.HI_CV()'><b>HI_CV</b><br>Test class: Resources.Figures<br>Test method: HI CV</td>
-<td></td>
-<td>4342</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.EN_US_CV()'><b>EN_US_CV</b><br>Test class: Resources.Figures<br>Test method: EN-US CV</td>
-<td></td>
-<td>4782</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.PT_CV()'><b>PT_CV</b><br>Test class: Resources.Figures<br>Test method: PT CV</td>
-<td></td>
-<td>4633</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.FR_PV()'><b>FR_PV</b><br>Test class: Resources.Figures<br>Test method: FR PV</td>
-<td></td>
-<td>3483</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.IT_PV()'><b>IT_PV</b><br>Test class: Resources.Figures<br>Test method: IT PV</td>
-<td></td>
-<td>3432</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.FR_CV()'><b>FR_CV</b><br>Test class: Resources.Figures<br>Test method: FR CV</td>
-<td></td>
-<td>4427</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.MM_VET()'><b>MM_VET</b><br>Test class: Resources.Figures<br>Test method: MM VET</td>
-<td></td>
-<td>3432</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.EN_MSD_PV()'><b>EN_MSD_PV</b><br>Test class: Resources.Figures<br>Test method: EN MSD PV</td>
-<td></td>
-<td>3410</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.AR_MSD_CV()'><b>AR_MSD_CV</b><br>Test class: Resources.Figures<br>Test method: AR MSD CV</td>
-<td></td>
-<td>4196</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.DE_PV()'><b>DE_PV</b><br>Test class: Resources.Figures<br>Test method: DE PV</td>
-<td></td>
-<td>3053</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.DE_CV()'><b>DE_CV</b><br>Test class: Resources.Figures<br>Test method: DE CV</td>
-<td></td>
-<td>4320</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.RU_PV()'><b>RU_PV</b><br>Test class: Resources.Figures<br>Test method: RU PV</td>
-<td></td>
-<td>3466</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.RU_CV()'><b>RU_CV</b><br>Test class: Resources.Figures<br>Test method: RU CV</td>
-<td></td>
-<td>34</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.ZH_PV()'><b>ZH_PV</b><br>Test class: Resources.Figures<br>Test method: CN PV</td>
-<td></td>
-<td>123</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.ZH_CV()'><b>ZH_CV</b><br>Test class: Resources.Figures<br>Test method: CN CV</td>
-<td></td>
-<td>117</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.KO_CV()'><b>KO_CV</b><br>Test class: Resources.Figures<br>Test method: KO CV</td>
-<td></td>
-<td>4323</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.MSD_VET()'><b>MSD_VET</b><br>Test class: Resources.Figures<br>Test method: MSD VET</td>
-<td></td>
-<td>3110</td>
-<td>Resources.Figures@a38c7fe</td></tr>
-<tr>
-<td title='Resources.Figures.PT_PV()'><b>PT_PV</b><br>Test class: Resources.Figures<br>Test method: PT PV</td>
-<td></td>
-<td>3560</td>
-<td>Resources.Figures@a38c7fe</td></tr>
+<td>7670</td>
+<td>Resources.Tables@26d9b808</td></tr>
 </table><p>
 </body>
 </html>

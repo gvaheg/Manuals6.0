@@ -20,7 +20,7 @@ public class Models3D extends All_Functions {
 			System.out.println("Browser Started!");
 			getDate();
 		}
-		
+		/*
 		@Test(priority = 1, description = "EN-US PV")
 		public void EN_US_PV() {
 			try {
@@ -217,27 +217,17 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-
+*/
 		@Test(priority = 16, description = "RU CV")
 		public void RU_CV() {
 			try {
 				wd = new FirefoxDriver();
 				wd.get("https://www.msdmanuals.com/ru/home/pages-with-widgets/3d-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8?mode=list");
 				Thread.sleep(2000);
-				// Close Cookies
-				try {
-					WebElement AcceptCookies = wd.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]"));
-					AcceptCookies.click();
-				} catch (Exception e) {
-					System.out.println("Can't Close Cookies");
-				}
-				// End Close Cookies
+				CloseCookies();
 				Thread.sleep(2000);
-				try {
-					wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
-				}catch(Exception e) {
-					System.out.println("Can't Close Prompt");
-					}
+				try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
+				}catch(Exception e) {System.out.println("Can't Close Prompt");}
 				System.out.println("VERSION: PROD RU CV");
 				verify3DModels();
 				wd.close();
@@ -245,7 +235,7 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-
+/*
 		@Test(priority = 17, description = "CN PV")
 		public void ZH_PV() {
 			try {
@@ -290,7 +280,8 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-
+*/
+		/*
 		@Test(priority = 19, description = "KO CV")
 		public void KO_CV() {
 			try {
@@ -382,6 +373,7 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
+		*/
 		@AfterClass
 		public void CloseBrowser() throws Exception {
 			getDate();

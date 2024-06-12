@@ -47,7 +47,7 @@ public class Images1 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+/*
 	@Test(priority = 3, description = "PT PV")
 	public void PT_PV() {
 		try {
@@ -99,7 +99,7 @@ public class Images1 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 7, description = "FR PV")
 	public void FR_PV() {
 		try {

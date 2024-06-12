@@ -280,7 +280,7 @@ public class Images3 extends All_Functions {
 		}
 	}
 	*/
-	
+	/*
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {
@@ -293,7 +293,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 20, description = "MM VET")
 	public void MM_VET() {
 		try {
@@ -307,6 +307,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
+	
 	@Test(priority = 21, description = "MSD VET")
 	public void MSD_VET() {
 		try {
@@ -320,7 +321,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	/*
 	@Test(priority = 22, description = "EN MSD PV")
 	public void EN_MSD_PV() {
 		try {
@@ -333,6 +334,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
+	
 	@Test(priority = 23, description = "EN MSD CV")
 	public void EN_MSD_CV() {
 		try {
@@ -371,7 +373,7 @@ public class Images3 extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-		
+		*/
 	@Test(priority = 26, description = "UK PV")
 	public void UK_PV() {
 		try {

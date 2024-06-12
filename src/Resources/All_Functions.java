@@ -34,7 +34,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class All_Functions {
-
+//VAHE
 	private static final boolean Figures = false;
 	// START DRIVER
 	static WebDriver wd;
@@ -2940,7 +2940,7 @@ public class All_Functions {
 	public void openResource(Row rowN,int i, int s) throws InterruptedException{
 		
 		// Close the current browser session and start a new one
-		int maxTestsPerSession = 50;
+		int maxTestsPerSession = 25;
 		if (i % maxTestsPerSession == 0) {
 			String currentURL = wd.getCurrentUrl();
             wd.quit();

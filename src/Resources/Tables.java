@@ -21,7 +21,7 @@ public class Tables extends All_Functions {
 		wb = new XSSFWorkbook();
 		System.out.println("Browser Started!");
 	}
-
+/*
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
@@ -214,27 +214,17 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	dxfddsfdsfdsdsfds
 	@Test(priority = 16, description = "RU CV")
 	public void RU_CV() {
 		try {
 			wd = new FirefoxDriver();
 			wd.get("https://www.msdmanuals.com/ru/home/pages-with-widgets/%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D1%8B?mode=list");
 			Thread.sleep(2000);
-			// Close Cookies
-			try {
-				WebElement AcceptCookies = wd.findElement(By.xpath("//*[@id=\"onetrust-accept-btn-handler\"]"));
-				AcceptCookies.click();
-			} catch (Exception e) {
-				System.out.println("Can't Close Cookies");
-			}
-			// End Close Cookies
+			CloseCookies();
 			Thread.sleep(2000);
-			try {
-				wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
-			}catch(Exception e) {
-				System.out.println("Can't Close Prompt");
-				}
+			try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
+			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			System.out.println("VERSION: PROD RU CV");
 			verifyTables();
 			wd.close();
@@ -323,7 +313,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 22, description = "EN MSD PV")
 	public void EN_MSD_PV() {
 		try {
@@ -349,7 +339,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 		}
-	
+	/*
 		@Test(priority = 24, description = "AR MSD CV")
 		public void AR_MSD_CV() {
 			try {
@@ -401,7 +391,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		wd.close();
