@@ -532,7 +532,7 @@ public class All_Functions {
 							if (s > 36) {
 					            break; // Exit the loop if s exceeds 34
 					        }
-							WebElement section = wd.findElement(By.xpath(".//main/div/div//div[" + s + "]//div/div/h2"));
+							WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 							sectionText = section.getAttribute("innerText"); // Store section text
 							break; // Exit the loop if the section is found
 						} catch (Exception e) {
@@ -541,7 +541,7 @@ public class All_Functions {
 						}
 					}
 					// <END SECTIONS
-					int rowCount = wd.findElements(By.xpath("//main/div[1]/div/div/div["+s+"]//div[2]/ul/li")).size();
+					int rowCount = wd.findElements(By.xpath(".//main/div[1]//div["+s+"]//div[2]/ul/li")).size();
 					System.out.println("Rows in this section: " + rowCount);
 					// Main For Loop
 					for (int i = 1; i < rowCount + 1; i++) {
@@ -554,8 +554,9 @@ public class All_Functions {
 					        //Run Main Codes
 							openResource(rowN, i, s);
 							// SWITCH TO IFRAME
+							int z = i-1;
 							try {
-								WebElement iFrameCalc = wd.findElement(By.xpath(".//div["+i+"]/div/div[2]/div[1]/div/iframe"));
+								WebElement iFrameCalc = wd.findElement(By.cssSelector("#iframepopup"+z+ "> div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe"));
 								wd.switchTo().frame(iFrameCalc);
 							} catch (Exception e) {
 								System.out.println("Can't Switch");
@@ -575,7 +576,7 @@ public class All_Functions {
 
 							// GET CALCULATOR URL
 							try {
-								WebElement CalcLink = wd.findElement(By.xpath("//*[@id='iframepopup8']/div[2]/div[1]/div/iframe"));
+								WebElement CalcLink = wd.findElement(By.cssSelector("#iframepopup"+z+ "> div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe"));
 								System.out.println("Calculator URL: " + CalcLink.getAttribute("src"));
 								rowN.createCell(3).setCellValue(CalcLink.getAttribute("src"));
 
@@ -987,7 +988,7 @@ public class All_Functions {
 				CloseCookies();
 				int rowNum = 5;
 				
-				for (int s = 1; s < 36; s++) {
+				for (int s = 2; s < 36; s++) {
 					// SECTIONS>
 					String sectionText = null;
 					while (true) {
@@ -995,7 +996,7 @@ public class All_Functions {
 							if (s > 36) {
 					            break; // Exit the loop if s exceeds 34
 					        }
-							WebElement section = wd.findElement(By.xpath(".//main/div/div//div[" + s + "]//div/div/h2"));
+							WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 							sectionText = section.getAttribute("innerText"); // Store section text
 							break; // Exit the loop if the section is found
 						} catch (Exception e) {
@@ -1004,7 +1005,7 @@ public class All_Functions {
 						}
 					}
 					// <END SECTIONS
-						int rowCount = wd.findElements(By.xpath(".//main/div[1]/div/div/div/div[" + s + "]//div/div[2]/ul/li")).size();
+						int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
 						System.out.println("Rows in this section: " + rowCount);
 					// Main For Loop
 					for (int i = 1; i < rowCount + 1; i++) {
@@ -1107,7 +1108,7 @@ public class All_Functions {
 							if (s > 36) {
 					            break; // Exit the loop if s exceeds 34
 					        }
-							WebElement section = wd.findElement(By.xpath(".//main/div/div//div[" + s + "]//div/div/h2"));
+							WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 							sectionText = section.getAttribute("innerText"); // Store section text
 							break; // Exit the loop if the section is found
 						} catch (Exception e) {
@@ -1117,7 +1118,7 @@ public class All_Functions {
 					}
 					// <END SECTIONS
 					// ROWS>
-					int rowCount = wd.findElements(By.xpath(".//main/div[1]/div/div/div/div[" + s + "]//div/div[2]/ul/li")).size();
+					int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
 					System.out.println("Rows in this section: " + rowCount);
 					// <END ROWS
 					
@@ -1210,7 +1211,7 @@ public class All_Functions {
 								if (s > 36) {
 						            break; // Exit the loop if s exceeds 34
 						        }
-								WebElement section = wd.findElement(By.xpath(".//main/div/div//div[" + s + "]//div/div/h2"));
+								WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 								sectionText = section.getAttribute("innerText"); // Store section text
 								break; // Exit the loop if the section is found
 							} catch (Exception e) {
@@ -1220,7 +1221,7 @@ public class All_Functions {
 						}
 						// <END SECTIONS
 						// ROWS>
-						int rowCount = wd.findElements(By.xpath(".//main/div[1]/div/div/div/div[" + s + "]//div/div[2]/ul/li")).size();
+						int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
 						System.out.println("Rows in this section: " + rowCount);
 						// <END ROWS
 
@@ -1309,7 +1310,7 @@ public class All_Functions {
 								if (s > 36) {
 						            break; // Exit the loop if s exceeds 34
 						        }
-								WebElement section = wd.findElement(By.xpath(".//main/div/div//div[" + s + "]//div/div/h2"));
+								WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 								sectionText = section.getAttribute("innerText"); // Store section text
 								break; // Exit the loop if the section is found
 							} catch (Exception e) {
@@ -1319,7 +1320,7 @@ public class All_Functions {
 						}
 						// <END SECTIONS
 						// ROWS>
-						int rowCount = wd.findElements(By.xpath(".//main/div[1]/div/div/div/div[" + s + "]//div/div[2]/ul/li")).size();
+						int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
 						System.out.println("Rows in this section: " + rowCount);
 						// <END ROWS
 						// Main For Loop>
@@ -2940,7 +2941,7 @@ public class All_Functions {
 	public void openResource(Row rowN,int i, int s) throws InterruptedException{
 		
 		// Close the current browser session and start a new one
-		int maxTestsPerSession = 25;
+		int maxTestsPerSession = 30;
 		if (i % maxTestsPerSession == 0) {
 			String currentURL = wd.getCurrentUrl();
             wd.quit();
@@ -2985,7 +2986,7 @@ public class All_Functions {
 		// Get & write Description
 		try {
 			WebElement description = wd.findElement(By.xpath(
-					".//div["+i+"]/div/div[3]/div[2]/div[3]/div[1]/div/p"));
+					"//div[@data-testid='showDescription']/div/div/ul/div/p"));
 			System.out.println("Description: " + description.getAttribute("innerText"));
 			rowN.createCell(4).setCellValue(description.getAttribute("innerText"));
 		} catch (Exception e) {
@@ -2995,7 +2996,7 @@ public class All_Functions {
 		// Get & write Credits
 		try {
 			WebElement credits = wd
-					.findElement(By.xpath(".//div[\"+i+\"]/div/div[3]/div[2]/div[3]/div[2]/div/p"));
+					.findElement(By.xpath("//div[@data-testid='showDescription']/div[2]/div/div/p"));
 			System.out.println("Credits: " + credits.getAttribute("innerText"));
 			rowN.createCell(3).setCellValue(credits.getAttribute("innerText"));
 		} catch (Exception e) {
@@ -3009,7 +3010,7 @@ public class All_Functions {
 	//GET FILE NAME AND VERIFY IMAGE
 	public void getFileName(Row rowN) {
 		try {
-			WebElement FileName = wd.findElement(By.cssSelector("body > div > div > div > div.modal_modalBody___BnJ7.modal-body > div > div.MediaModalContent_carouselWrap__vHJ4_.MediaModalContent_fontSize1__Lrpc3 > div > div > div > div.active.carousel-item > div > div.ImagePopupContent_multiMediaImageContainer__sUjI0 > div.ImagePopupContent_imageCarousel__fxezY > span > img"));
+			WebElement FileName = wd.findElement(By.cssSelector(".modal_professional__9S_oL .MediaModalContent_carouselWrap__vHJ4_ .active.carousel-item .PopupContent_multiMediaImageContainer__wunjw > div.PopupContent_imageCarousel__uy4Mq > span > img"));
 			URL FileURL = new URL(FileName.getAttribute("src"));
 			System.out.println("Src attribute is: " + FileURL);
 			System.out.println("path = " + FileURL.getPath());
@@ -3257,7 +3258,7 @@ public class All_Functions {
 			// Close Popup
 			wd.switchTo().defaultContent();
 			wd.findElement(By
-					.xpath(".//p[@class='modal_btnClose__eatUo modal_headerElement__9HT5x']"))
+					.xpath(".//p[@class='modal_btnClose__eatUo false modal_headerElement__9HT5x']"))
 					.click();
 		} catch (Exception e) {
 			System.out.println("Cannot Close Popup!");
@@ -3267,7 +3268,7 @@ public class All_Functions {
 			Thread.sleep(2000);
 			wd.switchTo().defaultContent();
 			wd.findElement(By
-					.xpath(".//p[@class='modal_btnClose__eatUo modal_headerElement__9HT5x']"))
+					.xpath(".//p[@class='modal_btnClose__eatUo false modal_headerElement__9HT5x']"))
 					.click();
 		}
 	}

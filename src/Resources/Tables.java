@@ -21,7 +21,7 @@ public class Tables extends All_Functions {
 		wb = new XSSFWorkbook();
 		System.out.println("Browser Started!");
 	}
-/*
+
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
@@ -214,7 +214,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	dxfddsfdsfdsdsfds
+	
 	@Test(priority = 16, description = "RU CV")
 	public void RU_CV() {
 		try {
@@ -232,7 +232,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	/*
 	@Test(priority = 17, description = "CN PV")
 	public void CN_PV() {
 		try {
@@ -274,7 +274,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {
@@ -313,7 +313,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@Test(priority = 22, description = "EN MSD PV")
 	public void EN_MSD_PV() {
 		try {
@@ -339,7 +339,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 		}
-	/*
+	
 		@Test(priority = 24, description = "AR MSD CV")
 		public void AR_MSD_CV() {
 			try {
@@ -391,7 +391,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		wd.close();
