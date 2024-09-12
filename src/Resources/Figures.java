@@ -20,7 +20,7 @@ public class Figures extends All_Functions {
 		getDate();
 	}
 	
-	//UPDATE 9/12
+	//UPDATE 9/12/24
 
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
