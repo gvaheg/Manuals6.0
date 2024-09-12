@@ -124,7 +124,7 @@ public class Images2 extends All_Functions {
 	}
 	
 	
-	
+	*/
 	@Test(priority = 9, description = "ES PV")
 	public void ES_PV() {
 		try {
@@ -151,7 +151,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@Test(priority = 11, description = "DE PV")
 	public void DE_PV() {
 		try {
@@ -177,7 +177,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	/*
+	
 	@Test(priority = 13, description = "IT PV")
 	public void IT_PV() {
 		try {
@@ -236,7 +236,7 @@ public class Images2 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	/*
 	@Test(priority = 17, description = "CN PV")
 	public void ZH_PV() {

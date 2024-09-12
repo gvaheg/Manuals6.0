@@ -19,6 +19,8 @@ public class Figures extends All_Functions {
 		System.out.println("Browser Started!");
 		getDate();
 	}
+	
+	//UPDATE 9/12
 
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
@@ -272,7 +274,7 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+*/
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {
@@ -389,7 +391,7 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		getDate();

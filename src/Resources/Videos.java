@@ -16,7 +16,7 @@ public class Videos extends All_Functions {
 		wb = new XSSFWorkbook();
 		System.out.println("Browser Started!");
 	}
-/*
+
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
@@ -42,7 +42,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-*/
+
 	@Test(priority = 3, description = "PT PV")
 	public void PT_PV() {
 		try {
@@ -68,7 +68,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-/*
+
 	@Test(priority = 5, description = "JA PV")
 	public void JA_PV() {
 		try {
@@ -94,7 +94,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-*/
+
 	@Test(priority = 7, description = "FR PV")
 	public void FR_PV() {
 		try {
@@ -120,7 +120,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-/*
+
 	@Test(priority = 9, description = "ES PV")
 	public void ES_PV() {
 		try {
@@ -211,7 +211,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 
 	@Test(priority = 16, description = "RU CV")
 	public void RU_CV() {
@@ -272,7 +272,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-
+*/
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {
@@ -388,7 +388,7 @@ public class Videos extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		getDate();

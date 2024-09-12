@@ -20,7 +20,7 @@ public class Models3D extends All_Functions {
 			System.out.println("Browser Started!");
 			getDate();
 		}
-		/*
+		
 		@Test(priority = 1, description = "EN-US PV")
 		public void EN_US_PV() {
 			try {
@@ -217,7 +217,7 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-*/
+
 		@Test(priority = 16, description = "RU CV")
 		public void RU_CV() {
 			try {
@@ -281,7 +281,7 @@ public class Models3D extends All_Functions {
 			}
 		}
 */
-		/*
+		
 		@Test(priority = 19, description = "KO CV")
 		public void KO_CV() {
 			try {
@@ -373,7 +373,7 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-		*/
+		
 		@AfterClass
 		public void CloseBrowser() throws Exception {
 			getDate();

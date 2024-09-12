@@ -894,7 +894,7 @@ public class All_Functions {
 						// test 3d model exist
 						try {
 							WebElement ModelLink = wd
-									.findElement(By.xpath(".//div[@class='IFramePopupContent_iframe__gHA1p']/iframe"));
+									.findElement(By.xpath(".//div[@class='IFramePopupContent_iframebiodigital__szAqO']/iframe"));
 							System.out.println(i + ": 3D Model EXIST");
 							rowN.createCell(3).setCellValue("YES");
 						} catch (Exception e) {
