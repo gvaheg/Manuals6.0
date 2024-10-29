@@ -232,7 +232,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	/*
+	
 	@Test(priority = 17, description = "CN PV")
 	public void CN_PV() {
 		try {
@@ -249,11 +249,8 @@ public class Tables extends All_Functions {
 			}
 			// End Close Cookies
 			Thread.sleep(2000);
-			try {
-				wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
-			}catch(Exception e) {
-				System.out.println("Can't Close Prompt");
-				}
+			try {wd.findElement(By.xpath("//button[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
+			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			System.out.println("VERSION: PROD CN PV");
 			verifyTables();
 			wd.close();
@@ -274,7 +271,7 @@ public class Tables extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {

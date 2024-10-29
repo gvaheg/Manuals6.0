@@ -266,7 +266,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	*/
 	@Test(priority = 18, description = "CN CV")
 	public void ZH_CV() {
 		try {
@@ -279,7 +279,7 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	*/
+	
 	
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {

@@ -20,8 +20,8 @@ public class Figures extends All_Functions {
 		getDate();
 	}
 	
-	//UPDATE 9/12/24
-
+//Update 10/29/2024
+	
 	@Test(priority = 1, description = "EN-US PV")
 	public void EN_US_PV() {
 		try {
@@ -235,7 +235,7 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-/*
+
 	@Test(priority = 17, description = "CN PV")
 	public void ZH_PV() {
 		try {
@@ -251,7 +251,7 @@ public class Figures extends All_Functions {
 			}
 			// End Close Cookies
 			Thread.sleep(2000);
-			try {wd.findElement(By.xpath("//*[@id=\"access-confirmation-popup\"]/div/div/div/div/div[3]/a[1]")).click();
+			try {wd.findElement(By.xpath("//*[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']")).click();
 			}catch(Exception e) {System.out.println("Can't Close Prompt");}
 			
 			System.out.println("VERSION: PROD CN PV");
@@ -274,7 +274,7 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-*/
+
 	@Test(priority = 19, description = "KO CV")
 	public void KO_CV() {
 		try {
