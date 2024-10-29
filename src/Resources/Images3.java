@@ -398,7 +398,18 @@ public class Images3 extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	@Test(priority = 28, description = "SW CV")
+	public void SW_CV() {
+		try {
+			wd = new FirefoxDriver();
+			wd.get("https://www.msdmanuals.com/sw/home/pages-with-widgets/images?mode=list");
+			System.out.println("VERSION: PROD SW CV");
+			verifyImages3();
+			wd.close();
+		} catch (Exception e) {
+			System.out.println("Page Error!");
+		}
+	}
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		wd.close();

@@ -391,6 +391,18 @@ public class Figures extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
+	@Test(priority = 28, description = "SW CV")
+	public void SW_CV() {
+		try {
+			wd = new FirefoxDriver();
+			wd.get("https://www.msdmanuals.com/sw/home/pages-with-widgets/figures?mode=list");
+			System.out.println("VERSION: PROD SW CV");
+			verifyFigures();
+			wd.close();
+		} catch (Exception e) {
+			System.out.println("Page Error!");
+		}
+	}
 	
 	@AfterClass
 	public void CloseBrowser() throws Exception {

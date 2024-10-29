@@ -343,7 +343,18 @@ public class Sounds extends All_Functions {
 			System.out.println("Page Error!");
 		}
 	}
-	
+	@Test(priority = 28, description = "SW CV")
+	public void SW_CV() {
+		try {
+			wd = new FirefoxDriver();
+			wd.get("https://www.msdmanuals.com/sw/home/pages-with-widgets/audio?mode=list");
+			System.out.println("VERSION: PROD SW CV");
+			verifySounds();
+			wd.close();
+		} catch (Exception e) {
+			System.out.println("Page Error!");
+		}
+	}
 	@AfterClass
 	public void CloseBrowser() throws Exception {
 		wd.close();

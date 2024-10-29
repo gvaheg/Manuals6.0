@@ -226,7 +226,7 @@ public class LighthouseTest {
         urls.add("https://www.msdmanuals.com/home/skin-disorders/acne-and-related-disorders/acne"); // 35
         urls.add("https://www.msdmanuals.com/de/heim/hauterkrankungen/akne-und-verwandte-erkrankungen/akne"); // 36
         urls.add("https://www.msdmanuals.com/es/hogar/trastornos-de-la-piel/acn%C3%A9-y-trastornos-relacionados/acn%C3%A9"); // 37
-        urls.add("https://www.msdmanuals.com/fr/accueil/troubles-cutane%C3%A9s/acn%C3%A9-et-troubles-associ%C3%A9s/acn%C3%A9"); // 38
+        urls.add("https://www.msdmanuals.com/fr/accueil/troubles-cutan%C3%A9s/acn%C3%A9-et-troubles-associ%C3%A9s/acn%C3%A9"); // 38
         urls.add("https://www.msdmanuals.com/it/casa/patologie-della-cute/acne-e-disturbi-correlati/acne"); // 39
         urls.add("https://www.msdmanuals.com/ja-jp/home/17-%E7%9A%AE%E8%86%9A%E3%81%AE%E7%97%85%E6%B0%97/%E3%81%AB%E3%81%8D%E3%81%B3%E3%81%A8%E9%96%A2%E9%80%A3%E7%96%BE%E6%82%A3/%E3%81%AB%E3%81%8D%E3%81%B3%EF%BC%88%E3%81%96%E7%98%A1%EF%BC%89"); // 40
         urls.add("https://www.msdmanuals.com/ko/home/%ED%94%BC%EB%B6%80-%EC%A7%88%ED%99%98/%EC%97%AC%EB%93%9C%EB%A6%84-%EB%B0%8F-%EA%B4%80%EB%A0%A8-%EC%A7%88%ED%99%98/%EC%97%AC%EB%93%9C%EB%A6%84"); // 41

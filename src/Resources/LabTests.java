@@ -26,7 +26,7 @@ public class LabTests extends All_Functions {
 	public void EN_US_PV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.merckmanuals.com/professional/pages-with-widgets/lab-tests?mode=list");
+			wd.get("https://www.merckmanuals.com/professional/pages-with-widgets/lab-tests?mode=list");
 			System.out.println("VERSION: PROD EN-US PV");
 			verifyLabTests();
 			wd.close();
@@ -39,7 +39,7 @@ public class LabTests extends All_Functions {
 	public void EN_US_CV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.merckmanuals.com/home/pages-with-widgets/lab-tests?mode=list");
+			wd.get("https://www.merckmanuals.com/home/pages-with-widgets/lab-tests?mode=list");
 			System.out.println("VERSION: PROD EN-US CV");
 			verifyLabTests();
 			wd.close();
@@ -151,7 +151,7 @@ public class LabTests extends All_Functions {
 	public void DE_PV() {
 		try {
 			wd = new FirefoxDriver();
-			//wd.get("https://east.msdmanuals.com/de/profi/pages-with-widgets/images?mode=list");
+			//wd.get("https://www.msdmanuals.com/de/profi/pages-with-widgets/images?mode=list");
 			System.out.println("VERSION: PROD DE PV");
 			verifyLabTests();
 			wd.close();
@@ -163,7 +163,7 @@ public class LabTests extends All_Functions {
 	public void DE_CV() {
 		try {
 			wd = new FirefoxDriver();
-			//wd.get("https://east.msdmanuals.com/de/heim/pages-with-widgets/images?mode=list");
+			//wd.get("https://www.msdmanuals.com/de/heim/pages-with-widgets/images?mode=list");
 			System.out.println("VERSION: PROD DE CV");
 			verifyLabTests();
 			wd.close();
@@ -202,7 +202,7 @@ public class LabTests extends All_Functions {
 	public void RU_PV() {
 		try {
 			wd = new FirefoxDriver();
-			//wd.get("https://east.msdmanuals.com/ru/%D0%BF%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9/pages-with-widgets/images?mode=list");
+			//wd.get("https://www.msdmanuals.com/ru/%D0%BF%D1%80%D0%BE%D1%84%D0%B5%D1%81%D1%81%D0%B8%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9/pages-with-widgets/images?mode=list");
 			try {wd.findElement(By.xpath(".//div/div[2]/div/a[2]")).click();}catch(Exception e) {}
 			System.out.println("VERSION: PROD RU PV");
 			verifyLabTests();
@@ -216,7 +216,7 @@ public class LabTests extends All_Functions {
 	public void RU_CV() {
 		try {
 			wd = new FirefoxDriver();
-			//wd.get("https://east.msdmanuals.com/ru/%D0%B4%D0%BE%D0%BC%D0%B0/pages-with-widgets/images?mode=list");
+			//wd.get("https://www.msdmanuals.com/ru/%D0%B4%D0%BE%D0%BC%D0%B0/pages-with-widgets/images?mode=list");
 			// Close Cookies
 			Thread.sleep(2000);
 			// Close Cookies
@@ -308,7 +308,7 @@ public class LabTests extends All_Functions {
 	public void MM_VET() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.merckvetmanual.com/pages-with-widgets/images?mode=list");
+			wd.get("https://www.merckvetmanual.com/pages-with-widgets/images?mode=list");
 			System.out.println("VERSION: PROD MM VET");
 			verifyLabTests();
 			wd.close();
@@ -320,7 +320,7 @@ public class LabTests extends All_Functions {
 	public void MSD_VET() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.msdvetmanual.com/pages-with-widgets/images?mode=list");
+			wd.get("https://www.msdvetmanual.com/pages-with-widgets/images?mode=list");
 			System.out.println("VERSION: PROD MSD VET");
 			verifyLabTests();
 			wd.close();
@@ -334,7 +334,7 @@ public class LabTests extends All_Functions {
 	public void EN_PV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.msdmanuals.com/professional/pages-with-widgets/lab-tests?mode=list");
+			wd.get("https://www.msdmanuals.com/professional/pages-with-widgets/lab-tests?mode=list");
 			System.out.println("VERSION: PROD EN PV");
 			verifyLabTests();
 			wd.close();
@@ -347,7 +347,7 @@ public class LabTests extends All_Functions {
 	public void EN_CV() {
 		try {
 			wd = new FirefoxDriver();
-			wd.get("https://east.msdmanuals.com/home/pages-with-widgets/lab-tests?mode=list");
+			wd.get("https://www.msdmanuals.com/home/pages-with-widgets/lab-tests?mode=list");
 			System.out.println("VERSION: PROD EN CV");
 			verifyLabTests();
 			wd.close();
@@ -382,7 +382,18 @@ public class LabTests extends All_Functions {
 			}
 		}
 		
-	
+		@Test(priority = 26, description = "SW CV")
+		public void SW_CV() {
+			try {
+				wd = new FirefoxDriver();
+				wd.get("https://www.msdmanuals.com/sw/home/pages-with-widgets/lab-tests?mode=list");
+				System.out.println("VERSION: PROD SW CV");
+				verifyLabTests();
+				wd.close();
+			} catch (Exception e) {
+				System.out.println("Page Error!");
+			}
+		}
 
 	@AfterClass
 	public void CloseBrowser() throws Exception {

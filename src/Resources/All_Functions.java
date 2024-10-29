@@ -3108,7 +3108,7 @@ public class All_Functions {
 						//wait30.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='TopicHead_topicHeaderTittle__miyQz']")));
 					}
 					WebElement TopicTitle = wd
-							.findElement(By.xpath("//h1[@class='TopicHead_topicHeaderTittle__miyQz']"));
+							.findElement(By.xpath("//h1[@id='topicHeaderTitle']"));
 					System.out.println("Location Topic Title: " + TopicTitle.getText());
 					rowN.createCell(8).setCellValue("OK");
 					Thread.sleep(1000);

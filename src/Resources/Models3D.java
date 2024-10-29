@@ -373,7 +373,18 @@ public class Models3D extends All_Functions {
 				System.out.println("Page Error!");
 			}
 		}
-		
+		@Test(priority = 26, description = "SW CV")
+		public void SW_CV() {
+			try {
+				wd = new FirefoxDriver();
+				wd.get("https://www.msdmanuals.com/sw/home/pages-with-widgets/3d-models?mode=list");
+				System.out.println("VERSION: PROD SW CV");
+				verify3DModels();
+				wd.close();
+			} catch (Exception e) {
+				System.out.println("Page Error!");
+			}
+		}
 		@AfterClass
 		public void CloseBrowser() throws Exception {
 			getDate();
