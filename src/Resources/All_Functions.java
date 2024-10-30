@@ -392,7 +392,7 @@ public class All_Functions {
 			int rowNum = 5;
 
 
-			for (int s = 1; s < 36 + 1; s++) {
+			for (int s = 2; s < 36 + 1; s++) {
 				// SECTIONS>
 				String sectionText = null;
 				while (true) {
@@ -524,13 +524,13 @@ public class All_Functions {
 				CloseCookies();
 				int rowNum = 5;
 				
-				for (int s = 1; s < 36; s++) {
+				for (int s = 2; s < 36; s++) {
 					// SECTIONS>
 					String sectionText = null;
 					while (true) {
 						try {
 							if (s > 36) {
-					            break; // Exit the loop if s exceeds 34
+					            break; // Exit the loop if s exceeds 36
 					        }
 							WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
 							sectionText = section.getAttribute("innerText"); // Store section text
@@ -553,6 +553,7 @@ public class All_Functions {
 					        rowN.createCell(1).setCellValue(i);
 					        //Run Main Codes
 							openResource(rowN, i, s);
+							
 							// SWITCH TO IFRAME
 							int z = i-1;
 							try {
@@ -561,6 +562,7 @@ public class All_Functions {
 							} catch (Exception e) {
 								System.out.println("Can't Switch");
 							}
+							
 							try {
 								WebElement CalcTitle = wd.findElement(By.xpath("//span[@class='medCalcFontTitleBox']"));
 								System.out.println("Popup Title: " + CalcTitle.getAttribute("innerText") + ", Calculator: PASS");
@@ -572,7 +574,12 @@ public class All_Functions {
 								rowN.createCell(9).setCellValue("");
 								rowN.createCell(4).setCellValue("ERROR PAGE");
 							}
-							wd.switchTo().defaultContent();
+							
+							try {
+								wd.switchTo().defaultContent();
+							} catch (Exception e) {
+								System.out.println("Can't Switch TO DEFAULT");
+							}
 
 							// GET CALCULATOR URL
 							try {
@@ -584,6 +591,7 @@ public class All_Functions {
 								System.out.println("Calculator URL: NOT FOUND");
 								rowN.createCell(3).setCellValue("NOT FOUND");
 							}
+							
 							ShowDetails();
 							getLocation(rowN, wait10, wait20, wait50, i, rowN, HeadN, i);
 							ClosePopup();
@@ -591,7 +599,18 @@ public class All_Functions {
 							
 						} catch (Exception e) {
 							System.out.println("ERROR! Resource page is not responding. Relopening the page... ");
-							ErrorMain(currentURL, e);
+							Thread.sleep(3000);
+							((JavascriptExecutor) wd).executeScript("window.open()");
+							Thread.sleep(2000);
+							ArrayList<String> tabs1 = new ArrayList<String>(wd.getWindowHandles());
+							Thread.sleep(2000);
+							wd.close();
+							wd.switchTo().window(tabs1.get(1));
+							Thread.sleep(2000);
+							wd.get(currentURL);
+							Thread.sleep(5000);
+							CloseCookies();
+							return;
 						}
 						
 						
@@ -863,7 +882,7 @@ public class All_Functions {
 			excelRows(sheet, sectionCount, TotalCount, HeadN, rowHeading4);
 			CloseCookies();
 			int rowNum = 5;
-			for (int s = 1; s < 36 + 1; s++) {
+			for (int s = 2; s < 36 + 1; s++) {
 				// SECTIONS>
 				String sectionText = null;
 				while (true) {
@@ -1413,7 +1432,7 @@ public class All_Functions {
 			CloseCookies();
 			int rowNum = 5;
 			
-			for (int s = 1; s < 36; s++) {
+			for (int s = 2; s < 36; s++) {
 				// SECTIONS>
 				String sectionText = null;
 				while (true) {
@@ -2986,7 +3005,7 @@ public class All_Functions {
 		// Get & write Description
 		try {
 			WebElement description = wd.findElement(By.xpath(
-					"//div[@data-testid='showDescription']/div/div/ul/div/p"));
+					"//div[@class='SliderMobile_description__7xhlL']/div/div/p"));
 			System.out.println("Description: " + description.getAttribute("innerText"));
 			rowN.createCell(4).setCellValue(description.getAttribute("innerText"));
 		} catch (Exception e) {
@@ -2996,7 +3015,7 @@ public class All_Functions {
 		// Get & write Credits
 		try {
 			WebElement credits = wd
-					.findElement(By.xpath("//div[@data-testid='showDescription']/div[2]/div/div/p"));
+					.findElement(By.xpath("//div[@class='SliderMobile_credits___BXrj']/div/div/p"));
 			System.out.println("Credits: " + credits.getAttribute("innerText"));
 			rowN.createCell(3).setCellValue(credits.getAttribute("innerText"));
 		} catch (Exception e) {
@@ -3010,7 +3029,7 @@ public class All_Functions {
 	//GET FILE NAME AND VERIFY IMAGE
 	public void getFileName(Row rowN) {
 		try {
-			WebElement FileName = wd.findElement(By.cssSelector(".modal_professional__9S_oL .MediaModalContent_carouselWrap__vHJ4_ .active.carousel-item .PopupContent_multiMediaImageContainer__wunjw > div.PopupContent_imageCarousel__uy4Mq > span > img"));
+			WebElement FileName = wd.findElement(By.cssSelector(".active.carousel-item .PopupContent_multiMediaImageContainer__wunjw > div.PopupContent_imageCarousel__uy4Mq > span > img"));
 			URL FileURL = new URL(FileName.getAttribute("src"));
 			System.out.println("Src attribute is: " + FileURL);
 			System.out.println("path = " + FileURL.getPath());
@@ -3108,7 +3127,7 @@ public class All_Functions {
 						//wait30.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='TopicHead_topicHeaderTittle__miyQz']")));
 					}
 					WebElement TopicTitle = wd
-							.findElement(By.xpath("//h1[@id='topicHeaderTitle']"));
+							.findElement(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz']"));
 					System.out.println("Location Topic Title: " + TopicTitle.getText());
 					rowN.createCell(8).setCellValue("OK");
 					Thread.sleep(1000);
