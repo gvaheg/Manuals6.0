@@ -55,7 +55,440 @@ public class All_Functions {
         wd = driver;
         
     }
-	
+    
+    
+ // VERIFY QUIZZES
+    public void verifyQuizzes() throws Exception {
+        ManageWindows();
+        WebDriverWait wait50 = new WebDriverWait(wd, Duration.ofSeconds(50));
+        WebDriverWait wait20 = new WebDriverWait(wd, Duration.ofSeconds(20));
+        WebDriverWait wait10 = new WebDriverWait(wd, Duration.ofSeconds(10));
+        WebDriverWait wait5 = new WebDriverWait(wd, Duration.ofSeconds(5));
+        String currentURL = wd.getCurrentUrl();
+        wd.get(currentURL);
+        confirmPage(wait20, wait50);
+        CloseCookies();
+        try {
+            int sectionCount = wd.findElements(By.xpath(".//div/div/div/div/h2")).size();
+            System.out.println("We have Sections: " + sectionCount);
+            int TotalCount = wd.findElements(By.xpath(".//div/div/div/div/div[1]/div/div/div[2]/ul/li")).size();
+            System.out.println("Total Number: " + TotalCount);
+            XSSFSheet sheet = wb.createSheet();
+            Row rowHeading4 = sheet.createRow(4);
+            int HeadN = 0;
+            rowHeading4.createCell(HeadN++).setCellValue("SECTION");
+            rowHeading4.createCell(HeadN++).setCellValue("ID");
+            rowHeading4.createCell(HeadN++).setCellValue("TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION (PASS/FAIL)");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION URL");
+            rowHeading4.createCell(HeadN++).setCellValue("LOC. URL RESPONSE");
+            rowHeading4.createCell(HeadN++).setCellValue("CHOICE 1");
+            rowHeading4.createCell(HeadN++).setCellValue("CHOICE 2");
+            rowHeading4.createCell(HeadN++).setCellValue("CHOICE 3");
+            rowHeading4.createCell(HeadN++).setCellValue("CHOICE 4");
+            excelRows(sheet, sectionCount, TotalCount, HeadN, rowHeading4);
+            CloseCookies();
+            int rowNum = 5;
+
+            for (int s = 2; s < 36; s++) {
+                // SECTIONS>
+                String sectionText = null;
+                while (true) {
+                    try {
+                        if (s > 36) {
+                            break; // Exit the loop if s exceeds 34
+                        }
+                        WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
+                        sectionText = section.getAttribute("innerText"); // Store section text
+                        break; // Exit the loop if the section is found
+                    } catch (Exception e) {
+                        System.out.println("Can't Find Section for s = " + s);
+                        s++; // Increment s if the section is not found
+                    }
+                }
+                // <END SECTIONS
+                int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
+                System.out.println("Rows in this section: " + rowCount);
+                // Main For Loop
+                for (int i = 1; i < rowCount + 1; i++) {
+                    try {
+                        Row rowN = sheet.createRow(rowNum++);
+                        // Section Text to Excel
+                        rowN.createCell(0).setCellValue(sectionText);
+                        System.out.println("Section: " + sectionText);
+                        rowN.createCell(1).setCellValue(i);
+                        // Run Main Codes
+                        openResource(rowN, i, s);
+
+                        
+                     // SWITCH TO IFRAME
+						try {
+							//wait50.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("iframe[class='IFrames_Iframe__WVuGl']")));
+							Thread.sleep(1000);
+							WebElement iFrameCalc = wd.findElement(By.cssSelector("iframe[class='IFrames_Iframe__WVuGl']"));
+							wd.switchTo().frame(iFrameCalc);
+						} catch (Exception e) {
+							System.out.println("Can't Switch");
+						}
+						
+						// Test Choices
+						try {
+							String choice1 = wd.findElement(By.xpath("//*[@id='choices']/li[1]/div[2]")).getText();
+							System.out.println("Choice 1: " + choice1);
+							rowN.createCell(7).setCellValue(choice1);
+						} catch (Exception e) {
+							System.out.println("No options");
+						}
+						try {
+							String choice2 = wd.findElement(By.xpath("//*[@id='choices']/li[2]/div[2]")).getText();
+							System.out.println("Choice 2: " + choice2);
+							rowN.createCell(8).setCellValue(choice2);
+						} catch (Exception e) {
+							System.out.println("No options");
+						}
+						try {
+							String choice3 = wd.findElement(By.xpath(".//*[@id='choices']/li[3]/div[2]")).getText();
+							System.out.println("Choice 3: " + choice3);
+							rowN.createCell(9).setCellValue(choice3);
+						} catch (Exception e) {
+							System.out.println("No options");
+						}
+						try {
+							String choice4 = wd.findElement(By.xpath(".//*[@id='choices']/li[4]/div[2]")).getText();
+							System.out.println("Choice 4: " + choice4);
+							rowN.createCell(10).setCellValue(choice4);
+						} catch (Exception e) {
+							System.out.println("No options");
+						}
+						// Choose choice
+						try {
+							wd.findElement(By.xpath(".//*[@id='choices']/li[1]/div[1]/input")).click();
+							try {
+								wd.findElement(By.xpath(".//*[@id='question_inner']/a")).click();
+								
+							} catch (Exception et) {
+								wd.findElement(By.xpath(".//*[@id='question_inner']/div[4]/a")).click();
+							}
+							Thread.sleep(1000);
+						} catch (Exception e) {
+							System.out.println("Can't Choose Option");
+						}
+
+						// Get location, verify links
+						try {
+							wait10.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//*[@id='reference_text']//a")));
+							WebElement moreinfo = wd.findElement(By.xpath(".//*[@id='reference_text']//a"));
+							System.out.println("Location " + i + ": " + moreinfo.getText());
+							rowN.createCell(3).setCellValue(moreinfo.getText());
+							rowN.createCell(4).setCellValue("Pass");
+							String linkUrl = moreinfo.getAttribute("href");
+							System.out.println("Location URL: " + linkUrl);
+							rowN.createCell(5).setCellValue(linkUrl);
+
+				            // Verify the location URL with an HTTP request
+				            boolean isURLValid = verifyURL(linkUrl);
+
+				            if (isURLValid) {
+				                System.out.println("URL is valid.");
+				                rowN.createCell(6).setCellValue("OK");
+				            } else {
+				                System.out.println("URL is not valid.");
+				                rowN.createCell(6).setCellValue("Not Found");
+
+				                // Highlight cell in red for invalid URL
+				                highlightCellRed(sheet, rowN.getCell(6));
+				            }
+
+						} catch (Exception e) {
+							System.out.println("Location " + i + ": Fail");
+							rowN.createCell(6).setCellValue("Fail");
+						} // END get location, verify links
+
+                        
+                        closePopup();
+                    } catch (Exception e) {
+                        System.out.println("ERROR! Resource page is not responding. Reopening the page... ");
+                        Thread.sleep(3000);
+                        ((JavascriptExecutor) wd).executeScript("window.open()");
+                        Thread.sleep(2000);
+                        ArrayList<String> tabs1 = new ArrayList<String>(wd.getWindowHandles());
+                        Thread.sleep(2000);
+                        wd.close();
+                        wd.switchTo().window(tabs1.get(1));
+                        Thread.sleep(2000);
+                        wd.get(currentURL);
+                        Thread.sleep(5000);
+                        CloseCookies();
+                        return;
+                    }
+                    try {
+                        FileOutputStream fout = new FileOutputStream("C:\\TestResults\\Quizzes.xlsx");
+                        wb.write(fout);
+                        fout.close();
+                        System.out.println("Written Successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Cannot SAVE File!");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR! Web page is not responding. Reopening the page... ");
+            ErrorMain(currentURL, e);
+        }
+    }
+    
+    
+ // VERIFY MODELS 3D
+    public void verifyModels3D() throws Exception {
+        ManageWindows();
+        WebDriverWait wait50 = new WebDriverWait(wd, Duration.ofSeconds(50));
+        WebDriverWait wait20 = new WebDriverWait(wd, Duration.ofSeconds(20));
+        WebDriverWait wait10 = new WebDriverWait(wd, Duration.ofSeconds(10));
+        WebDriverWait wait5 = new WebDriverWait(wd, Duration.ofSeconds(5));
+        String currentURL = wd.getCurrentUrl();
+        wd.get(currentURL);
+        confirmPage(wait20, wait50);
+        CloseCookies();
+        try {
+            int sectionCount = wd.findElements(By.xpath(".//div/div/div/div/h2")).size();
+            System.out.println("We have Sections: " + sectionCount);
+            int TotalCount = wd.findElements(By.xpath(".//div/div/div/div/div[1]/div/div/div[2]/ul/li")).size();
+            System.out.println("Total Number: " + TotalCount);
+            XSSFSheet sheet = wb.createSheet();
+            Row rowHeading4 = sheet.createRow(4);
+            int HeadN = 0;
+            rowHeading4.createCell(HeadN++).setCellValue("SECTION");
+            rowHeading4.createCell(HeadN++).setCellValue("ID");
+            rowHeading4.createCell(HeadN++).setCellValue("TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("3D MODEL EXIST");
+            rowHeading4.createCell(HeadN++).setCellValue("NONE");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION (PASS/FAIL)");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION URL");
+            rowHeading4.createCell(HeadN++).setCellValue("LOC. URL RESPONSE");
+            rowHeading4.createCell(HeadN++).setCellValue("CALCULATOR TITLE");
+            excelRows(sheet, sectionCount, TotalCount, HeadN, rowHeading4);
+            CloseCookies();
+            int rowNum = 5;
+
+            for (int s = 2; s < 36; s++) {
+                // SECTIONS>
+                String sectionText = null;
+                while (true) {
+                    try {
+                        if (s > 36) {
+                            break; // Exit the loop if s exceeds 34
+                        }
+                        WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
+                        sectionText = section.getAttribute("innerText"); // Store section text
+                        break; // Exit the loop if the section is found
+                    } catch (Exception e) {
+                        System.out.println("Can't Find Section for s = " + s);
+                        s++; // Increment s if the section is not found
+                    }
+                }
+                // <END SECTIONS
+                int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
+                System.out.println("Rows in this section: " + rowCount);
+                // Main For Loop
+                for (int i = 1; i < rowCount + 1; i++) {
+                    try {
+                        Row rowN = sheet.createRow(rowNum++);
+                        // Section Text to Excel
+                        rowN.createCell(0).setCellValue(sectionText);
+                        System.out.println("Section: " + sectionText);
+                        rowN.createCell(1).setCellValue(i);
+                        // Run Main Codes
+                        openResource(rowN, i, s);
+                     // test 3d model exist
+						try {
+							WebElement ModelLink = wd
+									.findElement(By.xpath(".//div[@class='IFramePopupContent_iframebiodigital__szAqO']/iframe"));
+							System.out.println(i + ": 3D Model EXIST");
+							rowN.createCell(3).setCellValue("YES");
+						} catch (Exception e) {
+							System.out.println(i + ": CANNOT FIND 3D MODEL");
+							rowN.createCell(3).setCellValue("NO");
+						}
+                        ShowDetails();
+                        getLocation(rowN, sheet, wait10, wait20, wait50, i, rowN, HeadN, i);
+                        closePopup();
+                    } catch (Exception e) {
+                        System.out.println("ERROR! Resource page is not responding. Reopening the page... ");
+                        Thread.sleep(3000);
+                        ((JavascriptExecutor) wd).executeScript("window.open()");
+                        Thread.sleep(2000);
+                        ArrayList<String> tabs1 = new ArrayList<String>(wd.getWindowHandles());
+                        Thread.sleep(2000);
+                        wd.close();
+                        wd.switchTo().window(tabs1.get(1));
+                        Thread.sleep(2000);
+                        wd.get(currentURL);
+                        Thread.sleep(5000);
+                        CloseCookies();
+                        return;
+                    }
+                    try {
+                        FileOutputStream fout = new FileOutputStream("C:\\TestResults\\Models3D.xlsx");
+                        wb.write(fout);
+                        fout.close();
+                        System.out.println("Written Successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Cannot SAVE File!");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR! Web page is not responding. Reopening the page... ");
+            ErrorMain(currentURL, e);
+        }
+    }
+    
+    
+ // VERIFY CALCULATORS
+    public void verifyCalculators() throws Exception {
+        ManageWindows();
+        WebDriverWait wait50 = new WebDriverWait(wd, Duration.ofSeconds(50));
+        WebDriverWait wait20 = new WebDriverWait(wd, Duration.ofSeconds(20));
+        WebDriverWait wait10 = new WebDriverWait(wd, Duration.ofSeconds(10));
+        WebDriverWait wait5 = new WebDriverWait(wd, Duration.ofSeconds(5));
+        String currentURL = wd.getCurrentUrl();
+        wd.get(currentURL);
+        confirmPage(wait20, wait50);
+        CloseCookies();
+        try {
+            int sectionCount = wd.findElements(By.xpath(".//div/div/div/div/h2")).size();
+            System.out.println("We have Sections: " + sectionCount);
+            int TotalCount = wd.findElements(By.xpath(".//div/div/div/div/div[1]/div/div/div[2]/ul/li")).size();
+            System.out.println("Total Number: " + TotalCount);
+            XSSFSheet sheet = wb.createSheet();
+            Row rowHeading4 = sheet.createRow(4);
+            int HeadN = 0;
+            rowHeading4.createCell(HeadN++).setCellValue("SECTION");
+            rowHeading4.createCell(HeadN++).setCellValue("ID");
+            rowHeading4.createCell(HeadN++).setCellValue("TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("CALCULATOR URL");
+            rowHeading4.createCell(HeadN++).setCellValue("CALCULATOR ERROR");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION TITLE");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION (PASS/FAIL)");
+            rowHeading4.createCell(HeadN++).setCellValue("LOCATION URL");
+            rowHeading4.createCell(HeadN++).setCellValue("LOC. URL RESPONSE");
+            rowHeading4.createCell(HeadN++).setCellValue("CALCULATOR TITLE");
+            excelRows(sheet, sectionCount, TotalCount, HeadN, rowHeading4);
+            CloseCookies();
+            int rowNum = 5;
+
+            for (int s = 2; s < 36; s++) {
+                // SECTIONS>
+                String sectionText = null;
+                while (true) {
+                    try {
+                        if (s > 36) {
+                            break; // Exit the loop if s exceeds 34
+                        }
+                        WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
+                        sectionText = section.getAttribute("innerText"); // Store section text
+                        break; // Exit the loop if the section is found
+                    } catch (Exception e) {
+                        System.out.println("Can't Find Section for s = " + s);
+                        s++; // Increment s if the section is not found
+                    }
+                }
+                // <END SECTIONS
+                int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
+                System.out.println("Rows in this section: " + rowCount);
+                // Main For Loop
+                for (int i = 1; i < rowCount + 1; i++) {
+                    try {
+                        Row rowN = sheet.createRow(rowNum++);
+                        // Section Text to Excel
+                        rowN.createCell(0).setCellValue(sectionText);
+                        System.out.println("Section: " + sectionText);
+                        rowN.createCell(1).setCellValue(i);
+                        // Run Main Codes
+                        openResource(rowN, i, s);
+                        
+
+						// SWITCH TO IFRAME
+						int z = i-1;
+						try {
+							WebElement iFrameCalc = wd.findElement(By.cssSelector("#iframepopup"+z+ "> div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe"));
+							wd.switchTo().frame(iFrameCalc);
+							Thread.sleep(500);
+						} catch (Exception e) {
+							System.out.println("Can't Switch");
+						}
+						
+						try {
+							WebElement CalcTitle = wd.findElement(By.xpath("//span[@class='medCalcFontTitleBox']"));
+							System.out.println("Popup Title: " + CalcTitle.getAttribute("innerText") + ", Calculator: PASS");
+							rowN.createCell(9).setCellValue(CalcTitle.getAttribute("innerText"));
+							rowN.createCell(4).setCellValue("OK");
+
+						} catch (Exception e) {
+							System.out.println("Calculator: FAIL (ERROR PAGE)");
+							rowN.createCell(9).setCellValue("");
+							rowN.createCell(4).setCellValue("ERROR PAGE");
+						}
+						
+						try {
+							wd.switchTo().defaultContent();
+						} catch (Exception e) {
+							System.out.println("Can't Switch TO DEFAULT");
+						}
+
+						// GET CALCULATOR URL
+						try {
+							WebElement CalcLink = wd.findElement(By.cssSelector("#iframepopup"+z+ "> div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe"));
+							System.out.println("Calculator URL: " + CalcLink.getAttribute("src"));
+							rowN.createCell(3).setCellValue(CalcLink.getAttribute("src"));
+
+						} catch (Exception e) {
+							System.out.println("Calculator URL: NOT FOUND");
+							rowN.createCell(3).setCellValue("NOT FOUND");
+						}
+                        
+                        
+                        ShowDetails();
+                        getLocation(rowN, sheet, wait10, wait20, wait50, i, rowN, HeadN, i);
+                        closePopup();
+                    } catch (Exception e) {
+                        System.out.println("ERROR! Resource page is not responding. Reopening the page... ");
+                        Thread.sleep(3000);
+                        ((JavascriptExecutor) wd).executeScript("window.open()");
+                        Thread.sleep(2000);
+                        ArrayList<String> tabs1 = new ArrayList<String>(wd.getWindowHandles());
+                        Thread.sleep(2000);
+                        wd.close();
+                        wd.switchTo().window(tabs1.get(1));
+                        Thread.sleep(2000);
+                        wd.get(currentURL);
+                        Thread.sleep(5000);
+                        CloseCookies();
+                        return;
+                    }
+                    try {
+                        FileOutputStream fout = new FileOutputStream("C:\\TestResults\\Calculators.xlsx");
+                        wb.write(fout);
+                        fout.close();
+                        System.out.println("Written Successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Cannot SAVE File!");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR! Web page is not responding. Reopening the page... ");
+            ErrorMain(currentURL, e);
+        }
+    }
+    
+    
+    
  // VERIFY VIDEOS
     public void verifyVideos() throws Exception {
         ManageWindows();
@@ -120,40 +553,28 @@ public class All_Functions {
                         openResource(rowN, i, s);
                         ShowDetails();
                         
-                       
-                        
-                        
-                        
-                        
-                        
+                        // GET VIDEO NAME
                 		// Assume titleNumber is set for the current title (e.g., 1 for Title 1, 2 for Title 2, etc.)
 						int titleNumber = i;  
 						int frameIndex = titleNumber - 1;  // Adjust because list indices start at 0
-
 						// Get all iframes with the common locator
 						List<WebElement> frames = wd.findElements(By.cssSelector("iframe.IFrames_Iframe__WVuGl"));
 						System.out.println("Found " + frames.size() + " iFrame(s).");
-
 						String fileName = "";
-
 						if (frames.size() > frameIndex) {
 						    try {
 						        // Switch back to the main document first
 						        wd.switchTo().defaultContent();
-
 						        // Use an explicit wait (10 seconds; adjust if needed) and switch into the iframe corresponding to the title number
 						        WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
 						        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frames.get(frameIndex)));
-
 						        // Since the <title> element is inside the <head> (and not visible), wait for its presence
 						        WebElement titleElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/head/title")));
-
 						        // Wait until the title element's text is non-empty (this handles timing issues)
 						        wait.until(driver -> {
 						            String text = titleElement.getAttribute("textContent");
 						            return text != null && !text.trim().isEmpty();
 						        });
-
 						        // Try to get the file name using textContent; if empty, try innerHTML as a fallback
 						        fileName = titleElement.getAttribute("textContent").trim();
 						        if (fileName.isEmpty()) {
@@ -170,28 +591,10 @@ public class All_Functions {
 						    System.out.println("Not enough iframes for Title " + titleNumber + ". Using fallback logic.");
 						    // Optionally, add fallback logic here (for example, iterating over frames or using a different locator)
 						}
-
+						
+						
 						// Now write the file name into the Excel row, column index 9 (10th column)
 						rowN.createCell(9).setCellValue(fileName);
-
-						
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                 		getCredits(rowN, i);
                         getLocation(rowN, sheet, wait10, wait20, wait50, i, rowN, HeadN, i);
                         closePopup();
@@ -787,9 +1190,6 @@ public class All_Functions {
 	}
 
 
-	
-	
-	
 
 	// Highlight a cell in red
 	private void highlightCellRed(XSSFSheet sheet, Cell cell) {
@@ -866,7 +1266,7 @@ public class All_Functions {
 	public void getLocation(Row rowN, XSSFSheet sheet, WebDriverWait wait10, WebDriverWait wait20, WebDriverWait wait30, int i, Row rowHeading4, int HeadN, int s) throws IOException, InterruptedException {
 	    try {
 	        WebElement location = locateElement(
-	            "//div[@class='accordionSection_carouselContainer__Y5UzM']//div/div[1]//div[2]/a",
+	            "//div[@class='accordionSection_carouselContainer__Y5UzM']//div/div[1]//div[2]//a",
 	            "//a[@class='InThisTopic_location__VJhFE']"
 	        );
 
@@ -928,20 +1328,48 @@ public class All_Functions {
 	    }
 	}
 
-	// Helper method to verify the URL with an HTTP request
+	
+	
+	
+	// UPD 04/10/25 Helper method to verify the URL with an HTTP request
 	private boolean verifyURL(String linkUrl) {
+	    if (linkUrl == null || linkUrl.isEmpty()) return false;
+
 	    try {
 	        HttpURLConnection connection = (HttpURLConnection) new URL(linkUrl).openConnection();
-	        connection.setRequestMethod("HEAD");
+	        connection.setRequestMethod("GET");  // use GET for better compatibility
+	        connection.setInstanceFollowRedirects(true);
 	        connection.setConnectTimeout(5000);
 	        connection.setReadTimeout(5000);
+	        connection.setRequestProperty("User-Agent", "Mozilla/5.0"); // mimic a real browser
+	        connection.connect();
+
 	        int responseCode = connection.getResponseCode();
-	        return responseCode >= 200 && responseCode < 300;
+	        System.out.println("GET response code: " + responseCode);
+
+	        // Accept 2xx and 3xx (redirects)
+	        return responseCode >= 200 && responseCode < 400;
+
 	    } catch (Exception e) {
 	        System.out.println("Error verifying URL: " + e.getMessage());
 	        return false;
 	    }
 	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// Add a helper to close popups
 	private void closePopup() throws InterruptedException {
