@@ -43,6 +43,8 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import io.netty.handler.timeout.TimeoutException;
+
 public class All_Functions {
 
 	private static final boolean Figures = false;
@@ -56,6 +58,158 @@ public class All_Functions {
         
     }
     
+   	// VERIFY TABLES
+       public void verifyTables() throws Exception {
+           ManageWindows();
+           WebDriverWait wait50 = new WebDriverWait(wd, Duration.ofSeconds(50));
+           WebDriverWait wait20 = new WebDriverWait(wd, Duration.ofSeconds(20));
+           WebDriverWait wait10 = new WebDriverWait(wd, Duration.ofSeconds(10));
+           WebDriverWait wait5 = new WebDriverWait(wd, Duration.ofSeconds(5));
+           String currentURL = wd.getCurrentUrl();
+           wd.get(currentURL);
+           confirmPage(wait20, wait50);
+           CloseCookies();
+           try {
+               int sectionCount = wd.findElements(By.xpath(".//div/div/div/div/h2")).size();
+               System.out.println("We have Sections: " + sectionCount);
+               int TotalCount = wd.findElements(By.xpath(".//div/div/div/div/div[1]/div/div/div[2]/ul/li")).size();
+               System.out.println("Total Number: " + TotalCount);
+               XSSFSheet sheet = wb.createSheet();
+               Row rowHeading4 = sheet.createRow(4);
+               int HeadN = 0;
+               rowHeading4.createCell(HeadN++).setCellValue("SECTION");
+               rowHeading4.createCell(HeadN++).setCellValue("ID");
+               rowHeading4.createCell(HeadN++).setCellValue("TITLE");
+               rowHeading4.createCell(HeadN++).setCellValue("NONE");
+               rowHeading4.createCell(HeadN++).setCellValue("NONE");
+               rowHeading4.createCell(HeadN++).setCellValue("LOCATION TITLE");
+               rowHeading4.createCell(HeadN++).setCellValue("LOCATION (PASS/FAIL)");
+               rowHeading4.createCell(HeadN++).setCellValue("LOCATION URL");
+               rowHeading4.createCell(HeadN++).setCellValue("LOC. URL RESPONSE");
+               excelRows(sheet, sectionCount, TotalCount, HeadN, rowHeading4);
+               CloseCookies();
+               int rowNum = 5;
+
+               for (int s = 2; s < 36; s++) {
+                   // SECTIONS>
+                   String sectionText = null;
+                   while (true) {
+                       try {
+                           if (s > 36) {
+                               break; // Exit the loop if s exceeds 34
+                           }
+                           WebElement section = wd.findElement(By.xpath(".//main/div[1]//div[" + s + "]//div/div/h2"));
+                           sectionText = section.getAttribute("innerText"); // Store section text
+                           break; // Exit the loop if the section is found
+                       } catch (Exception e) {
+                           System.out.println("Can't Find Section for s = " + s);
+                           s++; // Increment s if the section is not found
+                       }
+                   }
+                   // <END SECTIONS
+                   int rowCount = wd.findElements(By.xpath(".//main/div[1]//div[" + s + "]//div/div[2]/ul/li")).size();
+                   System.out.println("Rows in this section: " + rowCount);
+                   // Main For Loop
+                   for (int i = 1; i < rowCount + 1; i++) {
+                       try {
+                           Row rowN = sheet.createRow(rowNum++);
+                           // Section Text to Excel
+                           rowN.createCell(0).setCellValue(sectionText);
+                           System.out.println("Section: " + sectionText);
+                           rowN.createCell(1).setCellValue(i);
+                           // Run Main Codes
+                           openResource(rowN, i, s);
+                        // ShowDetails
+                   			try {
+                   				WebElement showDetails = null;
+                   				try {
+                   					showDetails = wd.findElement(By.xpath("//span[@class='PopupTable_showDetails__WDJpC']"));
+                   				} catch (Exception e) {
+                   					Thread.sleep(1000);
+                   					showDetails = wd.findElement(By.xpath("//*[@id='iframepopupundefined']/div[2]/div[2]/div[1]/div[1]/span[2]"));
+                   				}
+                   				if (showDetails != null) {
+                   				showDetails.click();
+                   				}
+                   			} catch (Exception ex) {
+                   				Thread.sleep(2000);
+                   				System.out.println("Can't CLICK ON SHOW DETAILS");
+                   			}
+                   			
+                   			try {
+                   			WebElement location = wd.findElement(By.xpath(".//a[@class='InThisTopic_location__VJhFE ']"));
+                   			System.out.println("Location " + i + ": " + location.getAttribute("innerText"));
+                   		 
+                   		        if (location != null) {
+                   		            // Element found, proceed with operations
+                   		            // Save location details in Excel
+                   		            rowN.createCell(5).setCellValue(location.getAttribute("innerText"));
+                   		            rowN.createCell(6).setCellValue("Pass");
+                   		            String linkUrl = location.getAttribute("href");
+                   		            rowN.createCell(7).setCellValue(linkUrl);
+                   		            System.out.println(linkUrl);
+
+                   		            // Verify the location URL with an HTTP request
+                   		            boolean isURLValid = verifyURL(linkUrl);
+
+                   		            if (isURLValid) {
+                   		                System.out.println("URL is valid.");
+                   		                rowN.createCell(8).setCellValue("OK");
+                   		            } else {
+                   		                System.out.println("URL is not valid.");
+                   		                rowN.createCell(8).setCellValue("Not Found");
+
+                   		                // Highlight cell in red for invalid URL
+                   		                highlightCellRed(sheet, rowN.getCell(8));
+                   		            }
+                   		        } else {
+                   		            // Element not found with either xpath
+                   		            System.out.println("Location not found.");
+                   		            rowN.createCell(6).setCellValue("Fail");
+
+                   		            // Highlight cell in red for location failure
+                   		            highlightCellRed(sheet, rowN.getCell(6));
+                   		        }
+                   		        
+                   		    } catch (Exception e) {
+                   		        System.out.println("Location " + i + ": Fail");
+                   		        rowN.createCell(6).setCellValue("Fail");
+
+                   		        // Highlight cell in red for location failure
+                   		        highlightCellRed(sheet, rowN.getCell(6));
+                   		    }
+                           closePopup();
+                       } catch (Exception e) {
+                           System.out.println("ERROR! Resource page is not responding. Reopening the page... ");
+                           Thread.sleep(3000);
+                           ((JavascriptExecutor) wd).executeScript("window.open()");
+                           Thread.sleep(2000);
+                           ArrayList<String> tabs1 = new ArrayList<String>(wd.getWindowHandles());
+                           Thread.sleep(2000);
+                           wd.close();
+                           wd.switchTo().window(tabs1.get(1));
+                           Thread.sleep(2000);
+                           wd.get(currentURL);
+                           Thread.sleep(5000);
+                           CloseCookies();
+                           return;
+                       }
+                       try {
+                           FileOutputStream fout = new FileOutputStream("C:\\TestResults\\Tables.xlsx");
+                           wb.write(fout);
+                           fout.close();
+                           System.out.println("Written Successfully!");
+                       } catch (Exception e) {
+                           System.out.println("Cannot SAVE File!");
+                       }
+                   }
+               }
+
+           } catch (Exception e) {
+               System.out.println("ERROR! Web page is not responding. Reopening the page... ");
+               ErrorMain(currentURL, e);
+           }
+       }
     
  // VERIFY QUIZZES
     public void verifyQuizzes() throws Exception {
@@ -121,7 +275,6 @@ public class All_Functions {
                         // Run Main Codes
                         openResource(rowN, i, s);
 
-                        
                      // SWITCH TO IFRAME
 						try {
 							//wait50.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("iframe[class='IFrames_Iframe__WVuGl']")));
@@ -177,7 +330,6 @@ public class All_Functions {
 
 						// Get location, verify links
 						try {
-							wait10.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//*[@id='reference_text']//a")));
 							WebElement moreinfo = wd.findElement(By.xpath(".//*[@id='reference_text']//a"));
 							System.out.println("Location " + i + ": " + moreinfo.getText());
 							rowN.createCell(3).setCellValue(moreinfo.getText());
@@ -1021,11 +1173,11 @@ public class All_Functions {
 	        // Initialize a new Firefox driver in headless mode
 	        FirefoxOptions options = new FirefoxOptions();
 	        if (i >= maxTestsPerSession) {
-	            System.out.println("Switching to headless mode...");
-	            options.setHeadless(true);
+	            System.out.println("RELOADING TO CONTINUE...");
+	           // options.setHeadless(true);
 	        } else {
-	            System.out.println("Running in normal mode...");
-	            options.setHeadless(false);
+	            System.out.println("CANNOT RELOAD TO CONTINUE...");
+	           // options.setHeadless(false);
 	        }
 
 	        // Restart the driver
@@ -1266,8 +1418,11 @@ public class All_Functions {
 	public void getLocation(Row rowN, XSSFSheet sheet, WebDriverWait wait10, WebDriverWait wait20, WebDriverWait wait30, int i, Row rowHeading4, int HeadN, int s) throws IOException, InterruptedException {
 	    try {
 	        WebElement location = locateElement(
-	            "//div[@class='accordionSection_carouselContainer__Y5UzM']//div/div[1]//div[2]//a",
-	            "//a[@class='InThisTopic_location__VJhFE']"
+	           
+	            "//div[@class='accordionSection_carouselContainer__Y5UzM']//div/div[1]//div[2]/a",
+	            "//div[2]/div[1]/div/div/ul/li/a",
+	            "//a[@class='InThisTopic_location__VJhFE ']"
+	            
 	        );
 
 	        if (location != null) {
@@ -1314,22 +1469,48 @@ public class All_Functions {
 	
 	
 	
-	// Helper method to locate an element with fallback strategies
-	private WebElement locateElement(String primaryXPath, String fallbackXPath) {
+	private int waitTimeoutSeconds = 10; // Example timeout in seconds
+
+	private WebElement locateElement(String primaryXPath, String fallbackXPath, String fallbackXPath2) {
+	    WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(waitTimeoutSeconds)); // Use Duration
+	    WebElement element = null;
+
 	    try {
-	        return wd.findElement(By.xpath(primaryXPath));
-	    } catch (NoSuchElementException e) {
-	        try {
-	            return wd.findElement(By.xpath(fallbackXPath));
-	        } catch (NoSuchElementException e1) {
-	            System.out.println("Element not found using either XPath.");
-	            return null;
-	        }
+	        System.out.println("Attempting to find element with primary XPath: " + primaryXPath);
+	        // Wait until the element located by the primary XPath is present in the DOM
+	        element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(primaryXPath)));
+	        //System.out.println("Element found using primary XPath.");
+	        return element;
+	    } catch (Exception e) { // Catch TimeoutException or other potential exceptions from wait.until
+	        System.out.println("Primary XPath failed: " + e.getMessage());
+	        // Optionally log the exception e if more detail is needed
 	    }
+
+	    try {
+	        System.out.println("Attempting to find element with fallback XPath: " + fallbackXPath);
+	        // Wait for the fallback XPath
+	        element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(fallbackXPath)));
+	        System.out.println("Element found using fallback XPath.");
+	        return element;
+	    } catch (Exception e) {
+	        System.out.println("Fallback XPath failed: " + e.getMessage());
+	    }
+
+	    try {
+	        System.out.println("Attempting to find element with second fallback XPath: " + fallbackXPath2);
+	        // Wait for the second fallback XPath
+	        element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(fallbackXPath2)));
+	        System.out.println("Element found using second fallback XPath.");
+	        return element;
+	    } catch (Exception e) {
+	        System.out.println("Second fallback XPath failed: " + e.getMessage());
+	    }
+
+	    // If we reach here, none of the XPaths worked within the timeout
+	    System.out.println("Element not found using any of the provided XPaths within the timeout period.");
+	    return null; // Return null explicitly if nothing was found
 	}
 
-	
-	
 	
 	// UPD 04/10/25 Helper method to verify the URL with an HTTP request
 	private boolean verifyURL(String linkUrl) {
@@ -1357,15 +1538,6 @@ public class All_Functions {
 	}
 
 
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
