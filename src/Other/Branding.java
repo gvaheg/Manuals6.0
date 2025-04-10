@@ -60,7 +60,7 @@ public class Branding {
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
             // Retrieve URLs from sitemap
-            List<String> urls = getUrlsFromSitemap("https://www.msdmanuals.com/sitemap.ashx");
+            List<String> urls = getUrlsFromSitemap("https://www.msdmanuals.com/de/sitemap.ashx");
             System.out.println("URLs retrieved from sitemap: " + urls.size());
 
             // Loop through each URL and check for "Merck"
