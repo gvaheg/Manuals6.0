@@ -21,29 +21,28 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ExternalLinkCrawler2 {
+public class ExternalLinkCrawlerFINAL {
 
     private static Set<String> visitedUrls = new HashSet<>();
     private static Queue<String> urlQueue = new LinkedList<>();
-    private static String baseUrl = "https://www.msdmanuals.com";
-    private static String sitemapUrl = "https://www.msdmanuals.com/sitemap.ashx";
+    private static String baseUrl = "https://www.msdmanuals.com/es";
+    private static String sitemapUrl = "https://www.msdmanuals.com/es/sitemap.ashx";
     private static WebDriver driver;
     private static Workbook workbook = new XSSFWorkbook();
     private static Sheet sheet = workbook.createSheet("ExternalURLs");
     private static int rowIndex = 1;
 
     private static Set<String> ignoredUrls = new HashSet<>(Arrays.asList(
-    	    "https://www.msdvetmanual.com",
-    	    "https://www.msdprivacy.com",
-    	    "https://www.facebook.com",
-    	    "https://twitter.com",
-    	    "https://www.essentialaccessibility.com",
-    	    "mailto:msdmanualspermissions@msd.com",
-    	    "https://play.google.com",
-    	    "https://apps.apple.com",
-    	    "https://www.msd.com"
-    	));
-
+        "https://www.msdvetmanual.com",
+        "https://www.msdprivacy.com",
+        "https://www.facebook.com",
+        "https://twitter.com",
+        "https://www.essentialaccessibility.com",
+        "mailto:msdmanualspermissions@msd.com",
+        "https://play.google.com",
+        "https://apps.apple.com",
+        "https://www.msd.com"
+    ));
 
     public static void main(String[] args) {
         System.setProperty("webdriver.gecko.driver", "C:\\SeleniumDrivers\\geckodriver.exe");
@@ -57,6 +56,8 @@ public class ExternalLinkCrawler2 {
             Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("Source URL");
             headerRow.createCell(1).setCellValue("External URL");
+            headerRow.createCell(2).setCellValue("HTTP Status Code");
+            headerRow.createCell(3).setCellValue("Merck Word Path");
 
             // Fetch URLs from sitemap
             List<String> sitemapUrls = fetchUrlsFromSitemap(sitemapUrl);
@@ -68,6 +69,20 @@ public class ExternalLinkCrawler2 {
         } finally {
             driver.quit();
             saveResultsToExcel();
+        }
+    }
+    public static int checkUrlStatus(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(5000); // Timeout of 5 seconds
+            connection.setReadTimeout(5000);    // Read timeout of 5 seconds
+            connection.connect();
+            return connection.getResponseCode();
+        } catch (IOException e) {
+            System.err.println("Error checking URL status: " + urlString + " - " + e.getMessage());
+            return -1; // Return -1 in case of error
         }
     }
 
@@ -86,7 +101,6 @@ public class ExternalLinkCrawler2 {
             }
             in.close();
 
-            // Use regex to extract URLs from sitemap
             Pattern pattern = Pattern.compile("<loc>(.*?)</loc>");
             Matcher matcher = pattern.matcher(content.toString());
             while (matcher.find()) {
@@ -110,7 +124,7 @@ public class ExternalLinkCrawler2 {
 
             try {
                 // Slow down the crawl to prevent server blocking
-                Thread.sleep(1000 + new Random().nextInt(1000));  // Random delay between 1 and 2 seconds
+                Thread.sleep(1000 + new Random().nextInt(1000));
 
                 driver.get(currentUrl);
                 visitedUrls.add(currentUrl);
@@ -133,9 +147,13 @@ public class ExternalLinkCrawler2 {
                     }
 
                     if (isExternalLink(href)) {
+                        int statusCode = checkUrlStatus(href);
+                        String merckWordPath = findMerckWordPath(href);
                         System.out.println("Source Page: " + currentUrl);
                         System.out.println("External URL: " + href);
-                        writeToExcel(currentUrl, href);
+                        System.out.println("HTTP Status Code: " + statusCode);
+                        System.out.println("Merck Word Path: " + merckWordPath);
+                        writeToExcel(currentUrl, href, statusCode, merckWordPath);
                         saveResultsToExcel();
                     }
                 }
@@ -146,11 +164,9 @@ public class ExternalLinkCrawler2 {
     }
 
     public static String normalizeUrl(String url) {
-        // Remove trailing slashes
         while (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
-        // Convert to lowercase for case-insensitive comparison
         return url.toLowerCase();
     }
 
@@ -172,10 +188,43 @@ public class ExternalLinkCrawler2 {
         return false;
     }
 
-    public static void writeToExcel(String sourceUrl, String externalUrl) {
+    public static String findMerckWordPath(String urlString) {
+        try {
+            driver.get(urlString);
+            List<WebElement> elements = driver.findElements(By.xpath("//*[contains(text(), 'merck')]"));
+            if (elements.isEmpty()) {
+                return "OK";
+            }
+            StringBuilder paths = new StringBuilder();
+            for (WebElement element : elements) {
+                paths.append(getElementPath(element)).append(";");
+            }
+            return paths.toString();
+        } catch (Exception e) {
+            return "Error";
+        }
+    }
+
+    public static String getElementPath(WebElement element) {
+        String path = element.getTagName();
+        WebElement parent = element.findElement(By.xpath(".."));
+        while (parent != null) {
+            path = parent.getTagName() + " > " + path;
+            try {
+                parent = parent.findElement(By.xpath(".."));
+            } catch (Exception e) {
+                break;
+            }
+        }
+        return path;
+    }
+
+    public static void writeToExcel(String sourceUrl, String externalUrl, int statusCode, String merckWordPath) {
         Row row = sheet.createRow(rowIndex++);
         row.createCell(0).setCellValue(sourceUrl);
         row.createCell(1).setCellValue(externalUrl);
+        row.createCell(2).setCellValue(statusCode);
+        row.createCell(3).setCellValue(merckWordPath);
     }
 
     public static void saveResultsToExcel() {

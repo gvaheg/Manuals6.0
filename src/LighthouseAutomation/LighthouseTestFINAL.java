@@ -1,150 +1,271 @@
 package LighthouseAutomation;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import java.io.*;
+import java.nio.file.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LighthouseTest3 {
+public class LighthouseTestFINAL {
+
+    // Run Lighthouse with retry logic
+    public static JsonObject runLighthouseWithRetry(String url, String outputPath) throws IOException, InterruptedException {
+        int retries = 3;
+        for (int attempt = 1; attempt <= retries; attempt++) {
+            try {
+                runLighthouse(url, outputPath);
+                JsonObject result = parseLighthouseReport(outputPath);
+
+                // Check if all required scores are available
+                if (isValidResult(result)) {
+                    return result;
+                }
+                System.err.println("Incomplete results for URL: " + url + ". Retrying... Attempt " + attempt);
+            } catch (Exception e) {
+                System.err.println("Error during Lighthouse run for URL: " + url + ". Attempt: " + attempt);
+                e.printStackTrace();
+            }
+        }
+        throw new RuntimeException("Lighthouse audit failed after retries for URL: " + url);
+    }
 
     // Run Lighthouse for a given URL
-    public static void runLighthouse(String url, String outputPath) {
-        try {
-            // Update this with the correct path to your lighthouse.cmd
-            String lighthousePath = "C:/Users/vahep/AppData/Roaming/npm/lighthouse.cmd";
+    public static void runLighthouse(String url, String outputPath) throws IOException, InterruptedException {
+        String lighthousePath = "C:/Users/vahep/AppData/Roaming/npm/lighthouse.cmd";
+        File lighthouseFile = new File(lighthousePath);
+        if (!lighthouseFile.exists()) {
+            throw new FileNotFoundException("Lighthouse command not found at: " + lighthousePath);
+        }
 
-            // Build the command for mobile emulation and multiple categories
-            List<String> command = new ArrayList<>();
-            command.add(lighthousePath);
-            command.add(url);
-            command.add("--output");
-            command.add("json");
-            command.add("--output-path");
-            command.add(outputPath);
-            // Remove the --headless flag to make the browser visible
-            command.add("--chrome-flags=--headless --user-agent='Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15A372 Safari/604.1' --window-size=375,812");
-            command.add("--only-categories=performance,accessibility,best-practices,seo");
+        // Build the Lighthouse command
+        List<String> command = new ArrayList<>();
+        command.add(lighthousePath);
+        command.add(url);
+        command.add("--output");
+        command.add("json");
+        command.add("--output-path");
+        command.add(outputPath);
+        command.add("--chrome-flags=--headless");
+        command.add("--only-categories=performance,accessibility,best-practices,seo");
 
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.redirectErrorStream(true); // Merge stdout and stderr
-            Process process = processBuilder.start();
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
+        processBuilder.redirectErrorStream(true);
+        Process process = processBuilder.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            throw new RuntimeException("Lighthouse process failed with exit code: " + exitCode);
+        }
+        System.out.println("Lighthouse completed successfully for URL: " + url);
+    }
+
+    // Clean up old JSON files before a new run
+    public static void cleanUpOldFiles(String outputDir) {
+        File dir = new File(outputDir);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles((d, name) -> name.endsWith(".json"));
+            if (files != null) {
+                for (File file : files) {
+                    if (!file.delete()) {
+                        System.err.println("Failed to delete old file: " + file.getAbsolutePath());
+                    }
+                }
             }
-
-            int exitCode = process.waitFor();
-            System.out.println("Lighthouse process for " + url + " exited with code: " + exitCode);
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     // Sanitize URLs to generate valid file names
     public static String sanitizeFileName(String url) {
-        return url.replace("https://", "").replace("http://", "").replaceAll("[^a-zA-Z0-9.-]", "_");
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(url.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(Integer.toHexString(0xFF & b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            return url.replaceAll("[^a-zA-Z0-9.-]", "_");
+        }
     }
 
     // Parse Lighthouse JSON report
     public static JsonObject parseLighthouseReport(String filePath) {
         JsonObject results = new JsonObject();
-        try (FileReader reader = new FileReader(filePath)) {
+        File reportFile = new File(filePath);
+
+        if (!reportFile.exists()) {
+            System.err.println("Lighthouse report not found: " + filePath);
+            return results;
+        }
+
+        try (FileReader reader = new FileReader(reportFile)) {
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-            results.addProperty("performance", getValue(jsonObject, "categories", "performance"));
-            results.addProperty("accessibility", getValue(jsonObject, "categories", "accessibility"));
-            results.addProperty("best-practices", getValue(jsonObject, "categories", "best-practices"));
-            results.addProperty("seo", getValue(jsonObject, "categories", "seo"));
+
+            // Add scores
+            results.addProperty("performance", getCategoryScore(jsonObject, "performance"));
+            results.addProperty("accessibility", getCategoryScore(jsonObject, "accessibility", true));
+            results.addProperty("best-practices", getCategoryScore(jsonObject, "best-practices"));
+            results.addProperty("seo", getCategoryScore(jsonObject, "seo"));
+
+            // Add performance metrics
             results.addProperty("first-contentful-paint", getAuditValue(jsonObject, "first-contentful-paint"));
             results.addProperty("largest-contentful-paint", getAuditValue(jsonObject, "largest-contentful-paint"));
             results.addProperty("total-blocking-time", getAuditValue(jsonObject, "total-blocking-time"));
             results.addProperty("cumulative-layout-shift", getAuditValue(jsonObject, "cumulative-layout-shift"));
             results.addProperty("speed-index", getAuditValue(jsonObject, "speed-index"));
         } catch (Exception e) {
+            System.err.println("Error parsing Lighthouse report at: " + filePath);
             e.printStackTrace();
         }
+
+        // Delete the JSON file after parsing
+        if (!reportFile.delete()) {
+            System.err.println("Failed to delete Lighthouse report file: " + filePath);
+        }
+
         return results;
     }
 
-    // Safely get audit metrics from JSON report
-    public static String getAuditValue(JsonObject jsonObject, String key) {
+    private static double getCategoryScore(JsonObject jsonObject, String category) {
+        return getCategoryScore(jsonObject, category, false);
+    }
+
+    private static double getCategoryScore(JsonObject jsonObject, String category, boolean allowNA) {
+        try {
+            JsonObject categories = jsonObject.getAsJsonObject("categories");
+            JsonElement element = categories.get(category);
+            if (element != null && !element.isJsonNull()) {
+                return element.getAsJsonObject().get("score").getAsDouble();
+            }
+        } catch (Exception e) {
+            if (allowNA) {
+                return -1; // Mark as N/A
+            }
+            System.err.println("Error retrieving score for category: " + category);
+            e.printStackTrace();
+        }
+        return 0.0; // Default to 0 if the category is missing or an error occurs
+    }
+
+    private static String getAuditValue(JsonObject jsonObject, String key) {
         try {
             return jsonObject.getAsJsonObject("audits").getAsJsonObject(key).get("displayValue").getAsString();
         } catch (Exception e) {
-            return "N/A";
+            System.err.println("Error retrieving audit value for key: " + key);
         }
+        return "N/A"; // Default to "N/A" if not found
     }
 
-    // Safely get category scores from JSON report
-    public static double getValue(JsonObject jsonObject, String category, String key) {
+    // Check if the result contains valid scores
+    public static boolean isValidResult(JsonObject result) {
+        return result.has("performance") && result.has("accessibility") &&
+               result.has("best-practices") && result.has("seo");
+    }
+
+    // Write results to Excel after each audit
+    public static void writeResultsToExcel(String fileName, String url, String versionName, JsonObject result) {
         try {
-            return jsonObject.getAsJsonObject(category).getAsJsonObject(key).get("score").getAsDouble();
+            Workbook workbook;
+            Sheet sheet;
+
+            File file = new File(fileName);
+            if (file.exists()) {
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    workbook = new XSSFWorkbook(fis);
+                    sheet = workbook.getSheet("Lighthouse Results");
+                }
+            } else {
+                workbook = new XSSFWorkbook();
+                sheet = workbook.createSheet("Lighthouse Results");
+                Row header = sheet.createRow(0);
+                header.createCell(0).setCellValue("Date");
+                header.createCell(1).setCellValue("Version Name");
+                header.createCell(2).setCellValue("URL");
+                header.createCell(3).setCellValue("Performance");
+                header.createCell(4).setCellValue("Accessibility");
+                header.createCell(5).setCellValue("Best Practices");
+                header.createCell(6).setCellValue("SEO");
+                header.createCell(7).setCellValue("First Contentful Paint");
+                header.createCell(8).setCellValue("Largest Contentful Paint");
+                header.createCell(9).setCellValue("Total Blocking Time");
+                header.createCell(10).setCellValue("Cumulative Layout Shift");
+                header.createCell(11).setCellValue("Speed Index");
+            }
+
+            int lastRowNum = sheet.getLastRowNum();
+            Row row = sheet.createRow(lastRowNum + 1);
+
+            row.createCell(0).setCellValue(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            row.createCell(1).setCellValue(versionName);
+            row.createCell(2).setCellValue(url);
+
+            Cell performanceCell = row.createCell(3);
+            double performance = result.has("performance") ? result.get("performance").getAsDouble() : -1;
+            if (performance == -1) {
+                performanceCell.setCellValue("N/A");
+                setCellColor(workbook, performanceCell, IndexedColors.RED);
+            } else {
+                performanceCell.setCellValue(performance);
+                if (performance < 0.6) {
+                    setCellColor(workbook, performanceCell, IndexedColors.YELLOW);
+                }
+            }
+
+            Cell accessibilityCell = row.createCell(4);
+            if (result.has("accessibility") && !result.get("accessibility").isJsonNull()) {
+                accessibilityCell.setCellValue(result.get("accessibility").getAsDouble());
+            } else {
+                accessibilityCell.setCellValue("N/A");
+            }
+
+            row.createCell(5).setCellValue(result.has("best-practices") ? result.get("best-practices").getAsDouble() : 0);
+            row.createCell(6).setCellValue(result.has("seo") ? result.get("seo").getAsDouble() : 0);
+            row.createCell(7).setCellValue(result.has("first-contentful-paint") ? result.get("first-contentful-paint").getAsString() : "N/A");
+            row.createCell(8).setCellValue(result.has("largest-contentful-paint") ? result.get("largest-contentful-paint").getAsString() : "N/A");
+            row.createCell(9).setCellValue(result.has("total-blocking-time") ? result.get("total-blocking-time").getAsString() : "N/A");
+            row.createCell(10).setCellValue(result.has("cumulative-layout-shift") ? result.get("cumulative-layout-shift").getAsString() : "N/A");
+            row.createCell(11).setCellValue(result.has("speed-index") ? result.get("speed-index").getAsString() : "N/A");
+
+            try (FileOutputStream fos = new FileOutputStream(fileName)) {
+                workbook.write(fos);
+            }
+            workbook.close();
         } catch (Exception e) {
-            return 0.0;
+            System.err.println("Error writing to Excel file: " + fileName);
+            e.printStackTrace();
         }
     }
 
-    // Write results to Excel 
-    public static void writeResultsToExcel(String fileName, List<String> urls, List<String> versionNames, List<JsonObject> auditResults) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Lighthouse Results");
-
-        // Create header row
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Date");
-        headerRow.createCell(1).setCellValue("Version Name");
-        headerRow.createCell(2).setCellValue("URL");
-        headerRow.createCell(3).setCellValue("Performance");
-        headerRow.createCell(4).setCellValue("Accessibility");
-        headerRow.createCell(5).setCellValue("Best Practices");
-        headerRow.createCell(6).setCellValue("SEO");
-        headerRow.createCell(7).setCellValue("First Contentful Paint");
-        headerRow.createCell(8).setCellValue("Largest Contentful Paint");
-        headerRow.createCell(9).setCellValue("Total Blocking Time");
-        headerRow.createCell(10).setCellValue("Cumulative Layout Shift");
-        headerRow.createCell(11).setCellValue("Speed Index");
-
-        // Get the current date
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = today.format(formatter);
-
-        // Add the data rows
-        for (int i = 0; i < urls.size(); i++) {
-            Row row = sheet.createRow(i + 1);
-            JsonObject result = auditResults.get(i);
-            row.createCell(0).setCellValue(formattedDate); // Add today's date
-            row.createCell(1).setCellValue(versionNames.get(i)); // Add version name
-            row.createCell(2).setCellValue(urls.get(i)); // Add URL
-            row.createCell(3).setCellValue(result.get("performance").getAsDouble());
-            row.createCell(4).setCellValue(result.get("accessibility").getAsDouble());
-            row.createCell(5).setCellValue(result.get("best-practices").getAsDouble());
-            row.createCell(6).setCellValue(result.get("seo").getAsDouble());
-            row.createCell(7).setCellValue(result.get("first-contentful-paint").getAsString());
-            row.createCell(8).setCellValue(result.get("largest-contentful-paint").getAsString());
-            row.createCell(9).setCellValue(result.get("total-blocking-time").getAsString());
-            row.createCell(10).setCellValue(result.get("cumulative-layout-shift").getAsString());
-            row.createCell(11).setCellValue(result.get("speed-index").getAsString());
-        }
-
-        // Write to the Excel file
-        try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
-            workbook.write(fileOut);
-        }
-
-        // Close the workbook
-        workbook.close();
+    private static void setCellColor(Workbook workbook, Cell cell, IndexedColors color) {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(color.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cell.setCellStyle(style);
     }
 
     public static void main(String[] args) {
+        String outputDir = "test-output";
+        new File(outputDir).mkdirs();
+        String fileName = "C:\\TestResults\\LighthouseResults.xlsx";
+
+        cleanUpOldFiles(outputDir);
+
         // List of URLs to audit
         List<String> urls = new ArrayList<>();
         urls.add("https://www.merckmanuals.com/professional"); // 0
@@ -185,7 +306,7 @@ public class LighthouseTest3 {
         urls.add("https://www.msdmanuals.com/home/skin-disorders/acne-and-related-disorders/acne"); // 35
         urls.add("https://www.msdmanuals.com/de/heim/hauterkrankungen/akne-und-verwandte-erkrankungen/akne"); // 36
         urls.add("https://www.msdmanuals.com/es/hogar/trastornos-de-la-piel/acn%C3%A9-y-trastornos-relacionados/acn%C3%A9"); // 37
-        urls.add("https://www.msdmanuals.com/fr/accueil/troubles-cutane%C3%A9s/acn%C3%A9-et-troubles-associ%C3%A9s/acn%C3%A9"); // 38
+        urls.add("https://www.msdmanuals.com/fr/accueil/troubles-cutan%C3%A9s/acn%C3%A9-et-troubles-associ%C3%A9s/acn%C3%A9"); // 38
         urls.add("https://www.msdmanuals.com/it/casa/patologie-della-cute/acne-e-disturbi-correlati/acne"); // 39
         urls.add("https://www.msdmanuals.com/ja-jp/home/17-%E7%9A%AE%E8%86%9A%E3%81%AE%E7%97%85%E6%B0%97/%E3%81%AB%E3%81%8D%E3%81%B3%E3%81%A8%E9%96%A2%E9%80%A3%E7%96%BE%E6%82%A3/%E3%81%AB%E3%81%8D%E3%81%B3%EF%BC%88%E3%81%96%E7%98%A1%EF%BC%89"); // 40
         urls.add("https://www.msdmanuals.com/ko/home/%ED%94%BC%EB%B6%80-%EC%A7%88%ED%99%98/%EC%97%AC%EB%93%9C%EB%A6%84-%EB%B0%8F-%EA%B4%80%EB%A0%A8-%EC%A7%88%ED%99%98/%EC%97%AC%EB%93%9C%EB%A6%84"); // 41
@@ -217,9 +338,8 @@ public class LighthouseTest3 {
         urls.add("https://www.msdmanuals.cn/home/injuries-and-poisoning/fractures/ankle-fractures"); // 67
         urls.add("https://www.msdmanuals.com/ar/home/%D8%A7%D9%84%D8%A5%D8%B5%D8%A7%D8%A8%D8%A7%D8%AA-%D9%88%D8%A7%D9%84%D8%AA%D9%91%D9%8E%D8%B3%D9%85%D9%91%D9%8F%D9%85/%D8%A7%D9%84%D9%83%D8%B3%D9%88%D8%B1/%D9%83%D9%8F%D8%B3%D9%88%D8%B1%D9%8F-%D8%A7%D9%84%D9%83%D8%A7%D8%AD%D9%84"); // 68
 
-        
 
-        // Manually add version names for each URL
+        // List of version names for each URL
         List<String> versionNames = new ArrayList<>();
         versionNames.add("EN PV Home Merck"); // 0
         versionNames.add("EN PV Home"); // 1
@@ -291,29 +411,20 @@ public class LighthouseTest3 {
         versionNames.add("CN CV Ankle Fractures"); // 67
         versionNames.add("AR CV Ankle Fractures"); // 68
 
+        for (int i = 0; i < urls.size(); i++) {
+            String url = urls.get(i);
+            String versionName = versionNames.get(i);
+            String outputPath = outputDir + "/lighthouse-report-" + sanitizeFileName(url) + ".json";
 
-        // List to store audit results for each URL
-        List<JsonObject> auditResults = new ArrayList<>();
-
-        // Loop through each URL, run Lighthouse, parse the result, and store the audit results
-        for (String url : urls) {
-            String outputPath = "lighthouse-report-" + sanitizeFileName(url) + ".json";
-
-            // Run Lighthouse for the current URL
-            runLighthouse(url, outputPath);
-
-            // Parse the audit results from the report
-            JsonObject result = parseLighthouseReport(outputPath);
-            auditResults.add(result);
+            try {
+                JsonObject result = runLighthouseWithRetry(url, outputPath);
+                writeResultsToExcel(fileName, url, versionName, result);
+            } catch (Exception e) {
+                System.err.println("Failed to process URL: " + url);
+                e.printStackTrace();
+            }
         }
 
-        // Write the results to an Excel file
-        try {
-            writeResultsToExcel("LighthouseResults.xlsx", urls, versionNames, auditResults);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Lighthouse audits completed and results written to LighthouseResults.xlsx");
+        System.out.println("Results written to: " + fileName);
     }
 }
