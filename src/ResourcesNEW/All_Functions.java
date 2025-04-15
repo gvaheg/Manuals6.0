@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -1214,7 +1216,7 @@ public class All_Functions {
 
 	        // Perform any necessary actions to reset or prepare the session
 	        ManageWindows();
-	        CloseCookies();
+	        handlePopups();
 	    }
 
 	    // Main Title
@@ -1535,7 +1537,7 @@ public class All_Functions {
 	    return null; // Return null explicitly if nothing was found
 	}
 
-	
+	/*
 	// UPD 04/10/25 Helper method to verify the URL with an HTTP request
 	private boolean verifyURL(String linkUrl) {
 	    if (linkUrl == null || linkUrl.isEmpty()) return false;
@@ -1560,7 +1562,7 @@ public class All_Functions {
 	        return false;
 	    }
 	}
-
+*/
 
 	
 	
@@ -1594,10 +1596,156 @@ public class All_Functions {
 	    }
 	}
 
+    
+    public void handlePopups() {
+        try {
+            System.out.println("Handling popups...");
+            WebElement acceptCookies = wd.findElement(By.xpath("//*[@id='onetrust-accept-btn-handler']"));
+            acceptCookies.click();
+            System.out.println("Cookies popup handled.");
+        } catch (Exception e) {
+            System.out.println("Cookies popup not found.");
+        }
 
+        try {
+            WebElement languageSelector = wd.findElement(By.xpath("//*[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']"));
+            languageSelector.click();
+            System.out.println("Language selector popup handled.");
+        } catch (Exception e) {
+            System.out.println("Language selector popup not found.");
+        }
+    }
 	
-	
-	
-	
+    public void verifyLanguageVersion(String url, String version, boolean hasPopup) {
+        try {
+            System.setProperty("webdriver.gecko.driver", "C:\\SeleniumDrivers\\geckodriver.exe");
+            All_Functions.wd = wd; // Set the WebDriver instance in All_Functions
+            System.out.println("Navigating to URL: " + url);
+            wd.get(url);
+            WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+            System.out.println("Page loaded successfully.");
+            if (hasPopup) {
+                handlePopups();
+            }
+           
+            System.out.println("VERSION: " + version);
+            verifyFigures();
+        } catch (Exception e) {
+            System.out.println("Page Error for version: " + version);
+            e.printStackTrace();
+        } finally {
+            if (wd != null) {
+                wd.close();
+                System.out.println("Browser closed.");
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Method to verify the URL with retries and random user-agents to avoid 403s and 429s
+    public boolean verifyURL(String linkUrl) {
+        if (linkUrl == null || linkUrl.isEmpty()) {
+            return false;
+        }
+
+        // A list of common user agents to mimic various browsers
+        String[] userAgents = {
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
+            "Mozilla/5.0 (Windows NT 6.3; Trident/7.0; AS; rv:11.0) like Gecko",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:49.0) Gecko/20100101 Firefox/49.0",
+            "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+        };
+
+        int maxRetries = 3;
+        int retryCount = 0;
+        boolean success = false;
+
+        while (retryCount < maxRetries) {
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL(linkUrl).openConnection();
+                connection.setRequestMethod("GET");
+                connection.setInstanceFollowRedirects(true);
+                connection.setConnectTimeout(5000);
+                connection.setReadTimeout(5000);
+                connection.setRequestProperty("User-Agent", getRandomUserAgent(userAgents)); // Randomized user-agent
+
+                connection.connect();
+
+                int responseCode = connection.getResponseCode();
+                System.out.println("GET response code: " + responseCode);
+
+                if (responseCode >= 200 && responseCode < 400) {
+                    success = true;
+                    break; // Exit loop if successful
+                }
+
+                // Handle specific status codes like 403 or 429 (too many requests)
+                if (responseCode == 403 || responseCode == 429) {
+                    System.out.println("Received " + responseCode + ". Retrying...");
+                    Thread.sleep(getRandomBackoffTime()); // Wait before retrying
+                } else {
+                    break; // Other errors, no retry needed
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error verifying URL: " + e.getMessage());
+                break; // If exception occurs, break out of the loop
+            }
+            retryCount++;
+        }
+
+        return success;
+    }
+
+    // Utility method to get a random User-Agent
+    private String getRandomUserAgent(String[] userAgents) {
+        Random rand = new Random();
+        return userAgents[rand.nextInt(userAgents.length)];
+    }
+
+    // Utility method to get a random backoff time in milliseconds
+    private int getRandomBackoffTime() {
+        Random rand = new Random();
+        return 2000 + rand.nextInt(3000); // Random time between 2000ms and 5000ms
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 }

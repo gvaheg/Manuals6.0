@@ -73,6 +73,7 @@ public class Figures extends All_Functions {
             if (hasPopup) {
                 handlePopups();
             }
+           
             System.out.println("VERSION: " + version);
             verifyFigures();
         } catch (Exception e) {
@@ -86,24 +87,6 @@ public class Figures extends All_Functions {
         }
     }
 
-    private void handlePopups() {
-        try {
-            System.out.println("Handling popups...");
-            WebElement acceptCookies = wd.findElement(By.xpath("//*[@id='onetrust-accept-btn-handler']"));
-            acceptCookies.click();
-            System.out.println("Cookies popup handled.");
-        } catch (Exception e) {
-            System.out.println("Cookies popup not found.");
-        }
-
-        try {
-            WebElement languageSelector = wd.findElement(By.xpath("//*[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']"));
-            languageSelector.click();
-            System.out.println("Language selector popup handled.");
-        } catch (Exception e) {
-            System.out.println("Language selector popup not found.");
-        }
-    }
 
     @AfterClass
     public void closeBrowser() throws Exception {
