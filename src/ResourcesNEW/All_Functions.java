@@ -338,20 +338,44 @@ public class All_Functions {
 							System.out.println("Location URL: " + linkUrl);
 							rowN.createCell(5).setCellValue(linkUrl);
 
-				            // Verify the location URL with an HTTP request
-				            boolean isURLValid = verifyURL(linkUrl);
-
-				            if (isURLValid) {
-				                System.out.println("URL is valid.");
-				                rowN.createCell(6).setCellValue("OK");
-				            } else {
-				                System.out.println("URL is not valid.");
-				                rowN.createCell(6).setCellValue("Not Found");
-
-				                // Highlight cell in red for invalid URL
-				                highlightCellRed(sheet, rowN.getCell(6));
-				            }
-
+							// VERIFY QUIZ LINKS ARE ACTIVE
+							try {
+								((JavascriptExecutor) wd).executeScript("window.open()");
+								Thread.sleep(1000);
+								ArrayList<String> tabs = new ArrayList<String>(wd.getWindowHandles());
+								try {
+									wd.switchTo().window(tabs.get(1));
+									wd.get(linkUrl);
+								} catch (Exception e) {
+									Thread.sleep(3000);
+									wd.switchTo().window(tabs.get(1));
+									wd.get(linkUrl);
+								}
+								CloseCookies();
+								try {
+									try {
+										wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']")));
+									} catch (Exception e) {
+										System.out.println("Refreshing the page!");
+										wd.navigate().refresh();
+										wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']")));
+									}
+									WebElement TopicTitle = wd
+											.findElement(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']"));
+									System.out.println("Location Topic Title: " + TopicTitle.getText());
+									rowN.createCell(6).setCellValue("OK");
+								} catch (Exception e) {
+									System.out.println("Location Topic Title: NOT FOUND");
+									rowN.createCell(6).setCellValue("Not Found");
+								}
+								wd.close();
+								wd.switchTo().window(tabs.get(0));
+							} catch (Exception e) {
+								Thread.sleep(2000);
+								System.out.println("URL: CANNOT VERIFY");
+								rowN.createCell(6).setCellValue("CANNOT VERIFY");
+							}
+							
 						} catch (Exception e) {
 							System.out.println("Location " + i + ": Fail");
 							rowN.createCell(6).setCellValue("Fail");
@@ -1174,10 +1198,10 @@ public class All_Functions {
 	        FirefoxOptions options = new FirefoxOptions();
 	        if (i >= maxTestsPerSession) {
 	            System.out.println("RELOADING TO CONTINUE...");
-	           // options.setHeadless(true);
+	           options.setHeadless(true);
 	        } else {
 	            System.out.println("CANNOT RELOAD TO CONTINUE...");
-	           // options.setHeadless(false);
+	           options.setHeadless(false);
 	        }
 
 	        // Restart the driver
@@ -1538,7 +1562,6 @@ public class All_Functions {
 	}
 
 
-	
 	
 	
 	

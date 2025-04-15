@@ -25,8 +25,8 @@ public class ExternalLinkCrawlerFINAL {
 
     private static Set<String> visitedUrls = new HashSet<>();
     private static Queue<String> urlQueue = new LinkedList<>();
-    private static String baseUrl = "https://www.msdmanuals.com/es";
-    private static String sitemapUrl = "https://www.msdmanuals.com/es/sitemap.ashx";
+    private static String baseUrl = "https://www.msdmanuals.com";
+    private static String sitemapUrl = "https://www.msdmanuals.com/sitemap.ashx";
     private static WebDriver driver;
     private static Workbook workbook = new XSSFWorkbook();
     private static Sheet sheet = workbook.createSheet("ExternalURLs");
