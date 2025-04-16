@@ -56,11 +56,12 @@ public class Sounds extends All_Functions {
             {"https://www.msdmanuals.com/professional/pages-with-widgets/audio?mode=list", "PROD EN MSD PV", false},
             {"https://www.msdmanuals.com/home/pages-with-widgets/audio?mode=list", "PROD EN MSD CV", false},
             {"https://www.msdmanuals.com/ar/home/pages-with-widgets/audio?mode=list", "PROD AR CV", false}, // Corrected label from your script's output
-            {"https://www.msdmanuals.com/vi/professional/pages-with-widgets/audio?mode=list", "PROD VI PV", false}, // Label from script was VI PV
+            {"https://www.msdmanuals.com/vi/professional/pages-with-widgets/audio?mode=list", "PROD VI PV", false},
             {"https://www.msdmanuals.com/uk/professional/pages-with-widgets/audio?mode=list", "PROD UK PV", false},
             {"https://www.msdmanuals.com/hi/home/pages-with-widgets/audio?mode=list", "PROD HI CV", false},
-            {"https://www.merckvetmanual.com/pages-with-widgets/audio?mode=list", "PROD MM VET", false},      // No extra handling in Sounds script
-            {"https://www.msdvetmanual.com/pages-with-widgets/audio?mode=list", "PROD MSD VET", false}       // No extra handling in Sounds script
+            {"https://www.msdmanuals.com/sw/home/pages-with-widgets/audio?mode=list", "PROD SW CV", false},
+            {"https://www.merckvetmanual.com/pages-with-widgets/audio?mode=list", "PROD MM VET", false},
+            {"https://www.msdvetmanual.com/pages-with-widgets/audio?mode=list", "PROD MSD VET", false}
         };
     }
 

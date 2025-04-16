@@ -275,7 +275,53 @@ public class All_Functions {
                         System.out.println("Section: " + sectionText);
                         rowN.createCell(1).setCellValue(i);
                         // Run Main Codes
-                        openResource(rowN, i, s);
+                	    // OPEN RESOURCE
+                	    try {
+                	        WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
+                	        WebElement titleElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+                	            ".//main/div[1]//div[" + s + "]//div/div[2]/ul/li[" + i + "]/a"
+                	        )));
+                	        String titleText = titleElement.getAttribute("innerText");
+                	        System.out.println("Title " + i + ": " + titleText);
+
+                	        // Write ID and Title
+                	        rowN.createCell(1).setCellValue(i);
+                	        rowN.createCell(2).setCellValue(titleText);
+
+                	        // Scroll to the resource item and click it
+                	        JavascriptExecutor js = (JavascriptExecutor) wd;
+                	        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", titleElement);
+                	        Thread.sleep(500); // Small pause to ensure scrolling completes
+
+                	        int retries = 3; // Retry mechanism
+                	        while (retries > 0) {
+                	            try {
+                	                titleElement.click();
+                	                System.out.println("Clicked on resource item " + i);
+                	                break; // Exit loop if successful
+                	            } catch (Exception e) {
+                	                System.out.println("Failed to click on resource item " + i + ", retrying...");
+                	                retries--;
+                	                Thread.sleep(1000);
+                	            }
+                	        }
+                	        if (retries == 0) {
+                	            throw new Exception("Failed to click on resource item " + i + " after retries");
+                	        }
+
+                	    } catch (Exception e) {
+                	        System.out.println("Failed to click on resource item " + i);
+                	        rowN.createCell(1).setCellValue(i);
+                	        rowN.createCell(2).setCellValue("CANNOT GET TITLE");
+                	        wd.navigate().refresh();
+                	    }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 
                      // SWITCH TO IFRAME
 						try {
@@ -593,23 +639,29 @@ public class All_Functions {
 						// SWITCH TO IFRAME
 						int z = i-1;
 						try {
-							WebElement iFrameCalc = wd.findElement(By.cssSelector("#iframepopup"+z+ "> div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe"));
-							wd.switchTo().frame(iFrameCalc);
-							Thread.sleep(500);
-						} catch (Exception e) {
-							System.out.println("Can't Switch");
-						}
-						
-						try {
-							WebElement CalcTitle = wd.findElement(By.xpath("//span[@class='medCalcFontTitleBox']"));
-							System.out.println("Popup Title: " + CalcTitle.getAttribute("innerText") + ", Calculator: PASS");
-							rowN.createCell(9).setCellValue(CalcTitle.getAttribute("innerText"));
-							rowN.createCell(4).setCellValue("OK");
+						    WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
+						    // Wait for the iframe to be present
+						    WebElement iFrameCalc = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#iframepopup" + z + " > div.IFramePopupContent_spaceForCarousalArrow__Wp4db > div.IFramePopupContent_content__WSH_v > div > iframe")));
+						    wd.switchTo().frame(iFrameCalc);
+						    // Optional small wait to ensure contents inside iframe are loaded
+						    new WebDriverWait(wd, Duration.ofSeconds(5)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='medCalcFontTitleBox']")));
 
 						} catch (Exception e) {
-							System.out.println("Calculator: FAIL (ERROR PAGE)");
-							rowN.createCell(9).setCellValue("");
-							rowN.createCell(4).setCellValue("ERROR PAGE");
+						    System.out.println("Can't Switch");
+						}
+
+						try {
+						    WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
+						    // Wait for the calculator title to be visible
+						    WebElement CalcTitle = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='medCalcFontTitleBox']")));
+						    System.out.println("Popup Title: " + CalcTitle.getAttribute("innerText") + ", Calculator: PASS");
+						    rowN.createCell(9).setCellValue(CalcTitle.getAttribute("innerText"));
+						    rowN.createCell(4).setCellValue("OK");
+
+						} catch (Exception e) {
+						    System.out.println("Calculator: FAIL (ERROR PAGE)");
+						    rowN.createCell(9).setCellValue("");
+						    rowN.createCell(4).setCellValue("ERROR PAGE");
 						}
 						
 						try {

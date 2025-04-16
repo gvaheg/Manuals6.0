@@ -56,8 +56,9 @@ public class Images extends All_Functions {
              {"https://www.msdmanuals.com/vi/professional/pages-with-widgets/h%C3%ACnh-%E1%BA%A3nh?mode=list", "PROD VI MSD PV", false},
              {"https://www.msdmanuals.com/uk/professional/pages-with-widgets/images?mode=list", "PROD UK PV", false},
              {"https://www.msdmanuals.com/hi/home/pages-with-widgets/images?mode=list", "PROD HI CV", false},
-             {"https://www.merckvetmanual.com/pages-with-widgets/images?mode=list", "PROD MM VET", true},       // Had extra handling in old script
-             {"https://www.msdvetmanual.com/pages-with-widgets/images?mode=list", "PROD MSD VET", true}        // Had extra handling in old script
+             {"https://www.msdmanuals.com/sw/home/pages-with-widgets/images?mode=list", "PROD SW CV", false},
+             {"https://www.merckvetmanual.com/pages-with-widgets/images?mode=list", "PROD MM VET", true},
+             {"https://www.msdvetmanual.com/pages-with-widgets/images?mode=list", "PROD MSD VET", true}
 
              // Add SW / other missing languages from the Figures list if needed
          };

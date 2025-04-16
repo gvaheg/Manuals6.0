@@ -34,7 +34,7 @@ public class Quizzes extends All_Functions {
         return new Object[][] {
 
             // URL, Label, NeedsSpecialHandling
-
+/*
             {"https://www.merckmanuals.com/professional/pages-with-widgets/quizzes?mode=list", "PROD EN-US PV", false},
             {"https://www.merckmanuals.com/home/pages-with-widgets/quizzes?mode=list", "PROD EN-US CV", false},
             {"https://www.msdmanuals.com/pt/profissional/pages-with-widgets/testes?mode=list", "PROD PT PV", false},
@@ -56,6 +56,7 @@ public class Quizzes extends All_Functions {
             {"https://www.msdmanuals.com/ko/home/pages-with-widgets/%ED%80%B4%EC%A6%88?mode=list", "PROD KO CV", false},
             {"https://www.merckvetmanual.com/pages-with-widgets/quizzes?mode=list", "PROD MM VET", false},
             {"https://www.msdvetmanual.com/pages-with-widgets/quizzes?mode=list", "PROD MSD VET", false},
+            */
             {"https://www.msdmanuals.com/professional/pages-with-widgets/quizzes?mode=list", "PROD EN MSD PV", false},
             {"https://www.msdmanuals.com/home/pages-with-widgets/quizzes?mode=list", "PROD EN MSD CV", false},
             {"https://www.msdmanuals.com/ar/home/pages-with-widgets/quizzes?mode=list", "PROD AR CV", false},
