@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="ResourcesNEW.Calculators">
+      <class name="ResourcesNEW.Figures">
         <methods>
-          <include name="closeBrowser"/>
           <include name="startBrowser"/>
           <include name="verifyLanguageVersion" invocation-numbers="0"/>
+          <include name="closeBrowser"/>
         </methods>
-      </class> <!-- ResourcesNEW.Calculators -->
+      </class> <!-- ResourcesNEW.Figures -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -33,6 +33,7 @@ public class Videos extends All_Functions {
 
         return new Object[][] {
             // URL, Label, NeedsSpecialHandling
+        	
             {"https://www.merckmanuals.com/professional/pages-with-widgets/videos?mode=list", "PROD EN-US PV", false},
             {"https://www.merckmanuals.com/home/pages-with-widgets/videos?mode=list", "PROD EN-US CV", false},
             {"https://www.msdmanuals.com/pt/profissional/pages-with-widgets/videos?mode=list", "PROD PT PV", false},

@@ -317,15 +317,9 @@ public class All_Functions {
                 	    }
                         
                         
-                        
-                        
-                        
-                        
-                        
 
                      // SWITCH TO IFRAME
 						try {
-							//wait50.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("iframe[class='IFrames_Iframe__WVuGl']")));
 							Thread.sleep(1000);
 							WebElement iFrameCalc = wd.findElement(By.cssSelector("iframe[class='IFrames_Iframe__WVuGl']"));
 							wd.switchTo().frame(iFrameCalc);
@@ -400,21 +394,26 @@ public class All_Functions {
 									wd.get(linkUrl);
 								}
 								CloseCookies();
+								// define once at the top
+								String headerXPath = "//h1[@id='topicHeaderTitle' or contains(@class,'TopicHead_topicHeaderTittle__miyQz ')]";
+
 								try {
-									try {
-										wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']")));
-									} catch (Exception e) {
-										System.out.println("Refreshing the page!");
-										wd.navigate().refresh();
-										wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']")));
-									}
-									WebElement TopicTitle = wd
-											.findElement(By.xpath("//h1[@class='readable TopicHead_topicHeaderTittle__miyQz ']"));
-									System.out.println("Location Topic Title: " + TopicTitle.getText());
-									rowN.createCell(6).setCellValue("OK");
+								    // wait (and refresh once if necessary)
+								    try {
+								        wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(headerXPath)));
+								    } catch (TimeoutException e) {
+								        System.out.println("Refreshing the page!");
+								        wd.navigate().refresh();
+								        wait20.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(headerXPath)));
+								    }
+
+								    // now grab whatever matched
+								    WebElement TopicTitle = wd.findElement(By.xpath(headerXPath));
+								    System.out.println("Location Topic Title: " + TopicTitle.getText());
+								    rowN.createCell(6).setCellValue("OK");
 								} catch (Exception e) {
-									System.out.println("Location Topic Title: NOT FOUND");
-									rowN.createCell(6).setCellValue("Not Found");
+								    System.out.println("Location Topic Title: NOT FOUND");
+								    rowN.createCell(6).setCellValue("Not Found");
 								}
 								wd.close();
 								wd.switchTo().window(tabs.get(0));
@@ -1651,6 +1650,7 @@ public class All_Functions {
     
     public void handlePopups() {
         try {
+        	Thread.sleep(500);
             System.out.println("Handling popups...");
             WebElement acceptCookies = wd.findElement(By.xpath("//*[@id='onetrust-accept-btn-handler']"));
             acceptCookies.click();
@@ -1660,6 +1660,7 @@ public class All_Functions {
         }
 
         try {
+        	Thread.sleep(500);
             WebElement languageSelector = wd.findElement(By.xpath("//*[@class='ChineseModalPopup_languageSelectorPopupVersionButton__j7M_0']"));
             languageSelector.click();
             System.out.println("Language selector popup handled.");

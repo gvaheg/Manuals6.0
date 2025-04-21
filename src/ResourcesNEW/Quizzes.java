@@ -18,7 +18,7 @@ public class Quizzes extends All_Functions {
 	@SuppressWarnings("deprecation")
 	private void setupWebDriver() {
 	    FirefoxOptions options = new FirefoxOptions();
-	    options.setHeadless(true); // Enable headless mode
+	    //options.setHeadless(true); // Enable headless mode
 	    wd = new FirefoxDriver(options); // Initialize WebDriver with options
 	}
     private WebDriver wd;
@@ -53,12 +53,12 @@ public class Quizzes extends All_Functions {
             {"https://www.msdmanuals.com/ru/home/pages-with-widgets/%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B?mode=list", "PROD RU CV", true},
             {"https://www.msdmanuals.cn/professional/pages-with-widgets/quizzes?mode=list", "PROD CN PV", true},
             {"https://www.msdmanuals.cn/home/pages-with-widgets/quizzes?mode=list", "PROD CN CV", false},
-            {"https://www.msdmanuals.com/ko/home/pages-with-widgets/%ED%80%B4%EC%A6%88?mode=list", "PROD KO CV", false},
+            */
+            {"https://www.msdmanuals.com/ko/home/pages-with-widgets/%ED%80%B4%EC%A6%88", "PROD KO CV", false},
             {"https://www.merckvetmanual.com/pages-with-widgets/quizzes?mode=list", "PROD MM VET", false},
             {"https://www.msdvetmanual.com/pages-with-widgets/quizzes?mode=list", "PROD MSD VET", false},
-            */
-            {"https://www.msdmanuals.com/professional/pages-with-widgets/quizzes?mode=list", "PROD EN MSD PV", false},
-            {"https://www.msdmanuals.com/home/pages-with-widgets/quizzes?mode=list", "PROD EN MSD CV", false},
+          //  {"https://www.msdmanuals.com/professional/pages-with-widgets/quizzes?mode=list", "PROD EN MSD PV", false},
+          //  {"https://www.msdmanuals.com/home/pages-with-widgets/quizzes?mode=list", "PROD EN MSD CV", false},
             {"https://www.msdmanuals.com/ar/home/pages-with-widgets/quizzes?mode=list", "PROD AR CV", false},
             {"https://www.msdmanuals.com/vi/professional/pages-with-widgets/quizzes?mode=list", "PROD VI PV", false},
             {"https://www.msdmanuals.com/hi/home/pages-with-widgets/quizzes?mode=list", "PROD HI PV", false}

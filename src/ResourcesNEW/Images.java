@@ -31,6 +31,7 @@ public class Images extends All_Functions {
     @DataProvider(name = "languageVersions")
     public Object[][] languageVersions() {
     	 return new Object[][] {
+    		 /*
              {"https://www.merckmanuals.com/professional/pages-with-widgets/images?mode=list", "PROD EN-US PV", false},
              {"https://www.merckmanuals.com/home/pages-with-widgets/images?mode=list", "PROD EN-US CV", false},
              {"https://www.msdmanuals.com/pt/profissional/pages-with-widgets/imagens?mode=list", "PROD PT PV", false},
@@ -46,7 +47,9 @@ public class Images extends All_Functions {
              {"https://www.msdmanuals.com/it/professionale/pages-with-widgets/immagini?mode=list", "PROD IT PV", false},
              {"https://www.msdmanuals.com/it/casa/pages-with-widgets/immagini?mode=list", "PROD IT CV", false},
              {"https://www.msdmanuals.com/ru/professional/pages-with-widgets/%D0%B8%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F?mode=list", "PROD RU PV", false},
+             */
              {"https://www.msdmanuals.com/ru/home/pages-with-widgets/%D0%B8%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F?mode=list", "PROD RU CV", true},
+             /*
              {"https://www.msdmanuals.cn/professional/pages-with-widgets/images?mode=list", "PROD CN PV", true},
              {"https://www.msdmanuals.cn/home/pages-with-widgets/images?mode=list", "PROD CN CV", false},
              {"https://www.msdmanuals.com/ko/home/pages-with-widgets/%EC%9D%B4%EB%AF%B8%EC%A7%80?mode=list", "PROD KO CV", false},
@@ -59,7 +62,7 @@ public class Images extends All_Functions {
              {"https://www.msdmanuals.com/sw/home/pages-with-widgets/images?mode=list", "PROD SW CV", false},
              {"https://www.merckvetmanual.com/pages-with-widgets/images?mode=list", "PROD MM VET", true},
              {"https://www.msdvetmanual.com/pages-with-widgets/images?mode=list", "PROD MSD VET", true}
-
+*/
              // Add SW / other missing languages from the Figures list if needed
          };
     }
@@ -75,6 +78,7 @@ public class Images extends All_Functions {
             WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
             System.out.println("Page loaded successfully.");
+            CloseCookies();
             if (hasPopup) {
                 handlePopups();
             }

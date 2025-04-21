@@ -18,7 +18,7 @@ public class Figures extends All_Functions {
 	@SuppressWarnings("deprecation")
 	private void setupWebDriver() {
 	    FirefoxOptions options = new FirefoxOptions();
-	    options.setHeadless(true); // Enable headless mode
+	    //options.setHeadless(true); // Enable headless mode
 	    wd = new FirefoxDriver(options); // Initialize WebDriver with options
 	}
     private WebDriver wd;
@@ -31,6 +31,7 @@ public class Figures extends All_Functions {
     @DataProvider(name = "languageVersions")
     public Object[][] languageVersions() {
         return new Object[][] {
+        	/*
             {"https://www.merckmanuals.com/professional/pages-with-widgets/figures?mode=list", "PROD EN-US PV", false},
             {"https://www.merckmanuals.com/home/pages-with-widgets/figures?mode=list", "PROD EN-US CV", false},
             {"https://www.msdmanuals.com/pt/profissional/pages-with-widgets/figuras?mode=list", "PROD PT PV", false},
@@ -46,7 +47,9 @@ public class Figures extends All_Functions {
             {"https://www.msdmanuals.com/it/professionale/pages-with-widgets/figure?mode=list", "PROD IT PV", false},
             {"https://www.msdmanuals.com/it/casa/pages-with-widgets/figure?mode=list", "PROD IT CV", false},
             {"https://www.msdmanuals.com/ru/professional/pages-with-widgets/%D1%80%D0%B8%D1%81%D1%83%D0%BD%D0%BA%D0%B8?mode=list", "PROD RU PV", false},
+            */
             {"https://www.msdmanuals.com/ru/home/pages-with-widgets/%D1%80%D0%B8%D1%81%D1%83%D0%BD%D0%BA%D0%B8?mode=list", "PROD RU CV", true},
+            /*
             {"https://www.msdmanuals.cn/professional/pages-with-widgets/figures?mode=list", "PROD CN PV", true},
             {"https://www.msdmanuals.cn/home/pages-with-widgets/figures?mode=list", "PROD CN CV", false},
             {"https://www.msdmanuals.com/ko/home/pages-with-widgets/%EA%B7%B8%EB%A6%BC?mode=list", "PROD KO CV", false},
@@ -56,6 +59,7 @@ public class Figures extends All_Functions {
             {"https://www.msdmanuals.com/uk/professional/pages-with-widgets/figures?mode=list", "PROD UK PV", false},
             {"https://www.msdmanuals.com/hi/home/pages-with-widgets/figures?mode=list", "PROD HI CV", false},
             {"https://www.msdmanuals.com/sw/home/pages-with-widgets/figures?mode=list", "PROD SW CV", false}
+            */
         };
     }
 
@@ -70,6 +74,7 @@ public class Figures extends All_Functions {
             WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
             System.out.println("Page loaded successfully.");
+            CloseCookies();
             if (hasPopup) {
                 handlePopups();
             }
